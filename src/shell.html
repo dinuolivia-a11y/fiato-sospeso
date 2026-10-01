@@ -1,0 +1,505 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Fiato Sospeso</title>
+<meta name="description" content="Il numero più pericoloso della serata: tenere in mano una fiala di nitroglicerina mentre tutti cercano di farti ridere.">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icons/icon-192.png" type="image/png">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Fiato Sospeso">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="theme-color" content="#FFF8EE" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#181A42" media="(prefers-color-scheme: dark)">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Ultra&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#FFF8EE; --stage:#FFFFFF; --ink:#1F2150; --ink-2:#45487C; --muted:#6A6C94;
+  --red:#D6322B; --on-red:#FFFFFF; --gold:#EBA51F; --on-gold:#1F2150;
+  --card:#FFFFFF; --edge:#1F2150; --shadow:#1F2150; --track:#EFE5D5;
+  --ok:#2E9A66; --warn:#E39A12; --bad:#D6322B; --focus:#2F66F5; --vig:214,50,43;
+  --display:"Ultra","Rockwell Extra Bold","Rockwell",Georgia,serif;
+  --text:"Bricolage Grotesque","Avenir Next","Segoe UI",system-ui,-apple-system,sans-serif;
+  color-scheme:light;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --paper:#181A42; --stage:#343A86; --ink:#F7EFE3; --ink-2:#DAD4EF; --muted:#A9ACD9;
+    --red:#FF5E4B; --on-red:#1A1C47; --gold:#FFC444; --on-gold:#1A1C47;
+    --card:#24275E; --edge:#F7EFE3; --shadow:#0B0C29; --track:#2E3274;
+    --ok:#52D69C; --warn:#FFC444; --bad:#FF5E4B; --focus:#9CB8FF; --vig:255,94,75;
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#181A42; --stage:#343A86; --ink:#F7EFE3; --ink-2:#DAD4EF; --muted:#A9ACD9;
+  --red:#FF5E4B; --on-red:#1A1C47; --gold:#FFC444; --on-gold:#1A1C47;
+  --card:#24275E; --edge:#F7EFE3; --shadow:#0B0C29; --track:#2E3274;
+  --ok:#52D69C; --warn:#FFC444; --bad:#FF5E4B; --focus:#9CB8FF; --vig:255,94,75;
+  color-scheme:dark;
+}
+
+*,*::before,*::after{box-sizing:border-box}
+[hidden]{display:none !important}
+:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+html{height:100%;scroll-padding-top:env(safe-area-inset-top,0px);background:var(--paper)}
+body{margin:0;height:100%;background:var(--paper);color:var(--ink);font-family:var(--text);font-size:17px;line-height:1.45;
+  -webkit-font-smoothing:antialiased;-webkit-text-size-adjust:100%;overscroll-behavior:none;-webkit-tap-highlight-color:transparent}
+h1,h2,h3{margin:0;line-height:1.1;font-weight:800}
+p{margin:0}
+button{font:inherit;color:inherit}
+#app{position:relative;height:100%;max-width:720px;margin:0 auto;overflow:hidden}
+
+.screen{position:absolute;inset:0;display:none;flex-direction:column;gap:14px;
+  padding:14px max(18px,env(safe-area-inset-right,0px)) 16px max(18px,env(safe-area-inset-left,0px))}
+.screen.active{display:flex;animation:fade .18s ease-out}
+.screen.scroll{overflow-y:auto;-webkit-overflow-scrolling:touch;gap:18px;padding-bottom:0}
+@keyframes fade{from{opacity:0}to{opacity:1}}
+
+/* pulsanti */
+.btn{appearance:none;-webkit-appearance:none;display:inline-flex;align-items:center;justify-content:center;gap:8px;
+  min-height:54px;padding:12px 18px;border:3px solid var(--edge);border-radius:16px;background:var(--card);color:var(--ink);
+  font-weight:800;font-size:17px;line-height:1.1;text-align:center;box-shadow:4px 4px 0 var(--shadow);cursor:pointer;
+  user-select:none;-webkit-user-select:none;touch-action:manipulation}
+.btn:active{transform:translate(3px,3px);box-shadow:1px 1px 0 var(--shadow)}
+.btn:focus-visible,.opt:focus-visible,.seg [role=radio]:focus-visible,.switch:focus-visible,.x:focus-visible{outline:3px solid var(--focus);outline-offset:3px}
+.btn.primary{background:var(--gold);color:var(--on-gold)}
+.btn.big{font-family:var(--display);font-weight:400;font-size:25px;min-height:68px;letter-spacing:.01em}
+.btn.small{min-height:40px;padding:6px 12px;font-size:15px;border-width:2px;border-radius:12px;box-shadow:2px 2px 0 var(--shadow)}
+.btn.plain{background:transparent;border-color:transparent;box-shadow:none;text-decoration:underline;text-underline-offset:4px;min-height:44px}
+.btn.plain:active{transform:none}
+.btn[disabled]{opacity:.5;cursor:default;transform:none;box-shadow:2px 2px 0 var(--shadow)}
+.btn.wide{width:100%}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.two .span{grid-column:1/-1}
+.stack{display:grid;gap:10px}
+.note{font-size:15px;color:var(--muted)}
+
+/* home */
+#s-home{justify-content:space-between;text-align:center;padding-top:20px}
+.sign-wrap{padding-top:36px}
+.sign{position:relative;display:inline-flex;flex-direction:column;align-items:center;padding:12px 26px 16px;
+  background:var(--gold);color:var(--on-gold);border:4px solid var(--edge);border-radius:20px;box-shadow:6px 6px 0 var(--shadow);
+  font-family:var(--display);font-weight:400;font-size:clamp(46px,14vw,78px);line-height:.95;transform:rotate(-2.5deg)}
+.sign::before,.sign::after{content:"";position:absolute;bottom:100%;width:4px;height:36px;background:var(--edge);border-radius:2px;margin-bottom:4px}
+.sign::before{left:20%}
+.sign::after{right:20%}
+.lead{max-width:30ch;margin:0 auto;font-size:18px;color:var(--ink-2);text-wrap:balance}
+.vessel-wrap{position:relative;flex:1 1 auto;min-height:150px}
+.vessel-wrap canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
+#home-vessel{min-height:120px;max-height:290px}
+.home-actions{display:grid;gap:12px}
+
+/* barre e blocchi */
+.bar{display:flex;align-items:center;gap:12px}
+.bar h2{font-family:var(--display);font-weight:400;font-size:25px}
+.block{display:grid;gap:10px}
+.block h3{font-size:19px}
+.add{display:flex;gap:10px}
+.field{flex:1;min-width:0;height:54px;padding:0 14px;border:3px solid var(--edge);border-radius:14px;background:var(--card);color:var(--ink);font:inherit;font-size:18px}
+.field::placeholder{color:var(--muted)}
+.field:focus-visible{outline:3px solid var(--focus);outline-offset:2px}
+.plist{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:8px}
+.plist:empty{display:none}
+.plist li{display:inline-flex;align-items:center;gap:2px;padding:3px 3px 3px 14px;border:2px solid var(--edge);border-radius:999px;background:var(--card);font-weight:700}
+.x{appearance:none;width:36px;height:36px;border:0;border-radius:50%;background:transparent;color:var(--ink);font-size:24px;line-height:1;cursor:pointer}
+.levels{display:grid;gap:10px}
+.opt{appearance:none;display:grid;gap:2px;text-align:left;padding:12px 14px;border:3px solid var(--edge);border-radius:14px;background:var(--card);color:var(--ink);cursor:pointer;box-shadow:3px 3px 0 var(--shadow)}
+.opt b{font-size:18px}
+.opt span{font-size:15px;color:var(--ink-2)}
+.opt[aria-checked="true"]{background:var(--gold);color:var(--on-gold)}
+.opt[aria-checked="true"] span{color:var(--on-gold)}
+.seg{display:flex;gap:8px}
+.seg [role=radio]{appearance:none;flex:1;min-height:48px;padding:8px 4px;border:3px solid var(--edge);border-radius:12px;background:var(--card);color:var(--ink);font-weight:800;font-size:15px;cursor:pointer}
+.seg [aria-checked="true"]{background:var(--gold);color:var(--on-gold);box-shadow:3px 3px 0 var(--shadow)}
+.switches{gap:8px}
+.switch{appearance:none;display:flex;align-items:center;justify-content:space-between;gap:14px;width:100%;padding:12px 14px;border:3px solid var(--edge);border-radius:14px;background:var(--card);color:var(--ink);text-align:left;cursor:pointer}
+.switch span{display:grid;gap:2px}
+.switch b{font-size:17px}
+.switch small{font-size:14px;color:var(--ink-2);line-height:1.35}
+.switch i{flex:none;position:relative;width:54px;height:32px;border-radius:999px;border:3px solid var(--edge);background:var(--track)}
+.switch i::after{content:"";position:absolute;top:3px;left:3px;width:20px;height:20px;border-radius:50%;background:var(--edge);transition:transform .15s}
+.switch[aria-checked="true"] i{background:var(--gold)}
+.switch[aria-checked="true"] i::after{transform:translateX(22px);background:var(--on-gold)}
+.cta{position:sticky;bottom:0;margin-top:auto;padding:14px 0 16px;background:linear-gradient(to bottom,rgba(0,0,0,0),var(--paper) 30%)}
+
+/* regole */
+.rules{display:grid;gap:10px;max-width:36em}
+.rules h3{font-size:19px;margin-top:10px}
+.rules p{color:var(--ink-2)}
+.rules .intro{font-size:19px;color:var(--ink)}
+
+/* palco */
+.stage{background:radial-gradient(ellipse 85% 50% at 50% 55%,var(--stage) 0%,rgba(0,0,0,0) 72%),var(--paper)}
+.test-feedback{min-height:2.9em;font-weight:800;font-size:18px;text-align:center;text-wrap:balance}
+#test-vessel{min-height:140px}
+
+/* turno */
+#s-turn{justify-content:space-between;text-align:center}
+.turn-round{color:var(--muted);font-weight:800}
+.turn-main{display:grid;gap:10px;justify-items:center}
+.big-name{font-family:var(--display);font-weight:400;font-size:clamp(46px,16vw,96px);line-height:.95;overflow-wrap:anywhere}
+.turn-sub{font-size:22px;font-weight:800}
+.turn-note{max-width:32ch;padding:8px 12px;border:2px dashed var(--red);border-radius:12px;font-weight:700}
+.turn-instr{max-width:32ch;color:var(--ink-2);font-size:18px}
+.turn-score{color:var(--muted);font-weight:700}
+
+/* gioco */
+#s-play{--card-h:clamp(132px,22vh,200px);--comp-h:70px;gap:10px;padding-top:10px;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
+#s-play.active{display:grid;grid-template-columns:minmax(0,1fr);grid-template-rows:auto var(--card-h) minmax(0,1fr) auto var(--comp-h) auto}
+.play-top{grid-row:1}
+.slot-card{grid-row:2;height:100%;min-height:0}
+#play-vessel{grid-row:3}
+#meter-block{grid-row:4}
+.comp-slot{grid-row:5;height:100%;min-height:0}
+.play-actions{grid-row:6}
+#s-play > :not(.vignette){position:relative;z-index:1}
+.vignette{position:absolute;inset:0;z-index:0;pointer-events:none;opacity:0;
+  background:radial-gradient(ellipse at 50% 55%,rgba(var(--vig),0) 45%,rgba(var(--vig),.7) 100%)}
+.play-top{display:flex;justify-content:space-between;align-items:center;gap:8px}
+#play-name{font-family:var(--display);font-size:23px;line-height:1.15;flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;text-align:center}
+#play-round{color:var(--muted);font-weight:800;font-size:15px;white-space:nowrap;flex:none}
+#abort-btn{flex:none;min-height:36px;padding:4px 10px;font-size:14px;font-weight:800}
+.ticket,.info-card{background:var(--card);border:3px solid var(--edge);border-radius:16px;box-shadow:4px 4px 0 var(--shadow)}
+.ticket{display:flex;flex-direction:column;overflow:hidden;padding:10px 14px 12px}
+.ticket-head{flex:none;display:flex;justify-content:space-between;align-items:center;gap:10px;padding-bottom:8px;margin-bottom:10px;border-bottom:2px dashed var(--edge);font-weight:800;font-size:15px;color:var(--ink-2)}
+.ticket-text{flex:1 1 auto;min-height:0;overflow:hidden;font-size:24px;font-weight:700;line-height:1.25;text-wrap:pretty}
+.ticket-text strong,.comp strong,.pen-text strong{font-weight:800;background:linear-gradient(transparent 58%,rgba(235,165,31,.5) 58%)}
+.info-card{display:flex;flex-direction:column;justify-content:center;overflow:hidden;padding:12px 14px;font-size:19px;font-weight:700;text-align:center;text-wrap:balance}
+.transit-title{font-family:var(--display);font-weight:400;font-size:27px;line-height:1.05;margin-bottom:6px}
+#play-vessel{min-height:150px;touch-action:none}
+#cv-play{touch-action:none}
+.readout{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;pointer-events:none;
+  color:#1A1C47;text-shadow:0 0 16px rgba(255,248,238,.75)}
+.blind .readout{color:#FFF8EE;text-shadow:0 0 12px rgba(0,0,0,.5)}
+.loot{font-family:var(--display);font-size:clamp(44px,15vw,90px);line-height:1}
+.loot-label{font-weight:800;font-size:15px}
+.meter-block{display:grid;gap:6px}
+.meter{position:relative;height:18px;border:3px solid var(--edge);border-radius:999px;background:var(--track);overflow:hidden}
+.meter .fill{position:absolute;left:0;top:0;bottom:0;width:0;background:var(--ok)}
+.meter .fill.warn{background:var(--warn)}
+.meter .fill.bad{background:var(--bad)}
+.meter .mark{position:absolute;top:0;bottom:0;width:3px;margin-left:-1.5px;background:var(--edge)}
+.meter-caption{display:flex;justify-content:space-between;gap:10px;font-size:14px;font-weight:700;color:var(--muted)}
+.meter-block.blind .meter{opacity:.25}
+.meter-block.blind .fill{visibility:hidden}
+.comp{height:100%;overflow:hidden;border:3px dashed var(--red);border-radius:14px;padding:8px 12px;font-weight:600;font-size:17px;line-height:1.3}
+.comp-wait{height:100%;display:flex;align-items:center;justify-content:center;padding:0 12px;border:3px dashed var(--track);border-radius:14px;color:var(--muted);font-weight:700;font-size:15px;text-align:center}
+.comp-wait:empty{border-color:transparent}
+.comp b{font-weight:800}
+.comp.pulse{animation:comp .6s ease-out}
+@keyframes comp{0%{background:rgba(var(--vig),.3);transform:scale(.97)}100%{background:rgba(var(--vig),0);transform:none}}
+.hint{position:absolute;left:50%;bottom:4px;z-index:2;transform:translateX(-50%);padding:5px 14px;border-radius:999px;background:var(--red);color:var(--on-red);font-weight:800;font-size:17px;white-space:nowrap;pointer-events:none}
+.hint:empty{display:none}
+.play-actions{display:grid;gap:10px}
+
+/* esplosione */
+#s-boom{background:var(--red);color:var(--on-red);overflow-y:auto}
+#cv-boom{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+.boom-inner{position:relative;margin:auto 0;display:grid;gap:12px;text-align:center}
+.boom-title{font-family:var(--display);font-weight:400;font-size:clamp(56px,17vw,130px);line-height:.9;animation:pop .55s cubic-bezier(.2,1.5,.45,1) both}
+@keyframes pop{0%{transform:scale(.2) rotate(-8deg);opacity:0}100%{transform:none;opacity:1}}
+.boom-cause{font-size:22px;font-weight:800;text-wrap:balance}
+.boom-lost{font-size:18px;font-weight:700}
+.boom-quip{font-size:17px;opacity:.9}
+.penance{margin-top:6px;background:var(--card);color:var(--ink);border:3px solid var(--edge);border-radius:16px;box-shadow:4px 4px 0 var(--shadow);padding:12px 14px;text-align:left}
+.pen-head{font-weight:800;font-size:15px;color:var(--ink-2);padding-bottom:6px;margin-bottom:8px;border-bottom:2px dashed var(--edge)}
+.pen-text{font-size:20px;font-weight:700;line-height:1.3}
+
+/* consegna, giri, finale */
+#s-next,#s-round,#s-final{text-align:center}
+.center-col{margin:auto 0;display:grid;gap:16px;padding:18px 0}
+.next-head{display:grid;gap:4px;justify-items:center;padding-top:12px}
+.plus{font-family:var(--display);font-size:clamp(64px,22vw,120px);line-height:.95}
+.next-quip{font-size:19px;font-weight:800}
+.next-sub{color:var(--ink-2);font-weight:700;max-width:32ch}
+.next-q{font-family:var(--display);font-weight:400;font-size:27px;margin-top:6px}
+.pick{display:grid;gap:10px}
+.pick .btn:not(.big){font-size:21px;min-height:60px}
+#next-note{padding-bottom:4px}
+.round-title{font-family:var(--display);font-weight:400;font-size:32px;padding-top:12px}
+.board{list-style:none;margin:0;padding:0;display:grid;gap:8px;counter-reset:pos;text-align:left}
+.board li{display:flex;align-items:center;gap:12px;padding:10px 14px;border:3px solid var(--edge);border-radius:14px;background:var(--card);font-weight:700;counter-increment:pos}
+.board li::before{content:counter(pos);font-family:var(--display);font-size:20px;min-width:1.3em;text-align:center}
+.board .nm{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.board .bm{color:var(--muted);font-size:14px;white-space:nowrap}
+.board .sc{font-weight:800;font-size:22px;font-variant-numeric:tabular-nums}
+.board li.first{background:var(--gold);color:var(--on-gold)}
+.board li.first .bm{color:var(--on-gold)}
+.round-note{font-weight:700;color:var(--ink-2)}
+.final-kicker{font-weight:800;font-size:20px;color:var(--ink-2);padding-top:14px}
+.final-score{font-weight:800;font-size:20px;margin-top:-6px}
+.awards{display:grid;gap:8px;text-align:left}
+.award{padding:10px 14px;border:3px dashed var(--edge);border-radius:14px}
+.award b{display:block;font-family:var(--display);font-weight:400;font-size:20px;line-height:1.2}
+.award span{color:var(--ink-2);font-weight:600}
+#s-round .stack,#s-final .stack{margin-top:auto;padding-bottom:18px}
+
+/* sovrapposizioni */
+.overlay{position:fixed;inset:0;z-index:30;display:flex;align-items:flex-end;justify-content:center;
+  padding:16px 16px calc(16px + env(safe-area-inset-bottom,0px));background:rgba(11,12,41,.55)}
+.sheet{width:100%;max-width:520px;display:grid;gap:12px;background:var(--card);color:var(--ink);border:3px solid var(--edge);border-radius:20px;box-shadow:6px 6px 0 var(--shadow);padding:18px}
+.sheet h3{font-family:var(--display);font-weight:400;font-size:24px;line-height:1.15}
+.sheet p{color:var(--ink-2)}
+.toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));z-index:40;max-width:min(92vw,480px);
+  padding:12px 16px;border:3px solid var(--edge);border-radius:14px;background:var(--card);color:var(--ink);font-weight:700;
+  box-shadow:4px 4px 0 var(--shadow);opacity:0;transform:translate(-50%,16px);pointer-events:none;transition:opacity .2s,transform .2s}
+.toast.on{opacity:1;transform:translate(-50%,0)}
+.flash{position:fixed;inset:0;z-index:50;background:#FFF8EE;opacity:0;pointer-events:none}
+.flash.go{animation:flash .45s ease-out}
+@keyframes flash{0%{opacity:.85}100%{opacity:0}}
+
+/* telefono in orizzontale */
+@media (orientation: landscape) and (max-height: 560px){
+  #home-vessel{display:none}
+  #s-home,#s-turn,#s-boom{overflow-y:auto}
+  .sign-wrap{padding-top:30px}
+  #s-play{--card-h:clamp(96px,32vh,170px);--comp-h:54px}
+  #s-play.active{grid-template-columns:minmax(0,1fr) minmax(0,1.2fr);
+    grid-template-rows:auto var(--card-h) var(--comp-h) auto minmax(0,1fr);column-gap:18px;row-gap:8px;
+    grid-template-areas:"top top" "vessel card" "vessel comp" "vessel meter" "vessel actions"}
+  .play-top{grid-area:top}
+  .slot-card{grid-area:card}
+  #play-vessel{grid-area:vessel;min-height:0}
+  #meter-block{grid-area:meter}
+  .comp-slot{grid-area:comp}
+  .play-actions{grid-area:actions;align-self:end}
+  .btn.big{min-height:58px;font-size:22px}
+}
+
+@media (prefers-reduced-motion: reduce){
+  .screen.active,.boom-title,.comp.pulse{animation:none}
+  .switch i::after,.toast{transition:none}
+}
+</style>
+</head>
+<body>
+<main id="app">
+
+  <section class="screen active" id="s-home" aria-labelledby="home-title">
+    <div class="sign-wrap">
+      <h1 class="sign" id="home-title"><span>Fiato</span><span>Sospeso</span></h1>
+    </div>
+    <p class="lead">Il numero più pericoloso della serata: tenere in mano una fiala di nitroglicerina mentre tutti cercano di farti ridere.</p>
+    <div class="vessel-wrap" id="home-vessel"><canvas id="cv-home" aria-hidden="true"></canvas></div>
+    <div class="home-actions">
+      <button class="btn primary big wide" data-go="setup">Nuova partita</button>
+      <div class="two">
+        <button class="btn" data-go="rules">Come si gioca</button>
+        <button class="btn" data-go="test">Prova la fiala</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="screen scroll" id="s-setup" aria-labelledby="setup-title">
+    <header class="bar"><button class="btn small" data-go="home">Indietro</button><h2 id="setup-title">Nuova partita</h2></header>
+    <div class="block">
+      <h3>Chi gioca</h3>
+      <div class="add">
+        <input class="field" id="name-in" type="text" maxlength="16" placeholder="Scrivi un nome" autocomplete="off" autocapitalize="words" spellcheck="false" enterkeyhint="done" aria-label="Nome di chi gioca">
+        <button class="btn" id="add-btn" type="button">Aggiungi</button>
+      </div>
+      <ul class="plist" id="plist" aria-live="polite"></ul>
+      <p class="note" id="pnote"></p>
+    </div>
+    <div class="block">
+      <h3 id="lv-h">Livello delle sfide</h3>
+      <div class="levels" id="levels" role="radiogroup" aria-labelledby="lv-h">
+        <button class="opt" type="button" role="radio" data-val="soft"><b>Soft</b><span>Leggero e gentile: va bene con tutti.</span></button>
+        <button class="opt" type="button" role="radio" data-val="ironico"><b>Ironico</b><span>Per adulti: figuracce, confessioni e prese in giro affettuose.</span></button>
+        <button class="opt" type="button" role="radio" data-val="piccante"><b>Piccante</b><span>Flirt, cotte e appuntamenti. Solo se tutto il gruppo è d’accordo.</span></button>
+      </div>
+    </div>
+    <div class="block">
+      <h3 id="rd-h">Durata</h3>
+      <div class="seg" id="rounds" role="radiogroup" aria-labelledby="rd-h">
+        <button type="button" role="radio" data-val="2">2 giri</button><button type="button" role="radio" data-val="3">3 giri</button><button type="button" role="radio" data-val="5">5 giri</button>
+      </div>
+    </div>
+    <div class="block">
+      <h3 id="se-h">Sensibilità della fiala</h3>
+      <div class="seg" id="sens" role="radiogroup" aria-labelledby="se-h">
+        <button type="button" role="radio" data-val="facile">Principianti</button><button type="button" role="radio" data-val="normale">Normale</button><button type="button" role="radio" data-val="chirurgo">Chirurgo</button>
+      </div>
+      <p class="note">Nel dubbio, dal menu c’è «Prova la fiala». In modalità dito la stessa scelta rende il cerchio più grande e lento, oppure più piccolo e nervoso.</p>
+    </div>
+    <div class="block switches">
+      <button class="switch" type="button" role="switch" data-key="night"><span><b>Modalità notte</b><small>Il telefono ascolta la stanza: si gioca sussurrando.</small></span><i aria-hidden="true"></i></button>
+      <button class="switch" type="button" role="switch" data-key="pen"><span><b>Penitenze</b><small>Chi fa esplodere la fiala paga pegno.</small></span><i aria-hidden="true"></i></button>
+      <button class="switch" type="button" role="switch" data-key="sound"><span><b>Suoni</b><small>Battito del cuore, sfrigolio e botto finale.</small></span><i aria-hidden="true"></i></button>
+      <button class="switch" type="button" role="switch" data-key="forceTouch"><span><b>Modalità dito</b><small>Senza sensore di movimento: un dito dentro un cerchio che si sposta.</small></span><i aria-hidden="true"></i></button>
+    </div>
+    <div class="cta"><button class="btn primary big wide" id="start-btn" type="button">Inizia la partita</button></div>
+  </section>
+
+  <section class="screen scroll" id="s-rules" aria-labelledby="rules-title">
+    <header class="bar"><button class="btn small" data-go="home">Indietro</button><h2 id="rules-title">Come si gioca</h2></header>
+    <article class="rules">
+      <p class="intro">Il telefono diventa una fiala di nitroglicerina. A turno la tenete in mano: più a lungo resiste, più punti fate. Ma ogni tremito la rende più pericolosa.</p>
+      <h3>Il tuo turno</h3>
+      <p>Tocca «Accendi la fiala» e appoggia il telefono in piano sul palmo aperto, a faccia in su. Dopo il conto alla rovescia compare la tua sfida: leggila e falla, senza far tremare la mano. Se il conto non finisce mai, tocca due volte «Annulla».</p>
+      <h3>I punti</h3>
+      <p>Finché la fiala resta intera, i punti in gioco crescono sempre più in fretta. Ma cresce anche l’instabilità: all’inizio regge quasi tutto, dopo mezzo minuto basta un sospiro. Quando vuoi, tocca «Incassa» con delicatezza e i punti sono tuoi. Se esplode prima, li perdi tutti.</p>
+      <h3>Il pubblico</h3>
+      <p>Gli altri possono fare di tutto per farti ridere: facce, imitazioni, battute. Tutto tranne toccarti. E ridere fa tremare le mani.</p>
+      <h3>Le complicazioni</h3>
+      <p>Ogni 15 secondi arriva una complicazione: alzati, chiudi gli occhi, cambia mano. Alcune cambiano le regole del turno. Una volta per turno puoi cambiare la sfida, se proprio non ti va.</p>
+      <h3>La consegna</h3>
+      <p>Dopo il tuo turno scegli a chi passare la fiala e gliela consegni ancora accesa, palmo a palmo. Chi la riceve tocca «Presa». Se esplode durante la consegna i punti sono salvi, ma a voi due tocca una penitenza di coppia.</p>
+      <h3>Giri e vittoria</h3>
+      <p>In ogni giro tutti tengono la fiala una volta. Il giro dopo lo comincia chi è più indietro in classifica. Alla fine vince chi ha più punti.</p>
+      <h3>Modalità notte</h3>
+      <p>Il telefono ascolta anche la stanza: se c’è troppo rumore, la fiala esplode. Si gioca sussurrando, ed è perfetta quando in casa qualcuno dorme.</p>
+      <h3>Modalità dito</h3>
+      <p>Se il sensore di movimento non funziona, o se vi va così: si tiene un dito dentro un cerchio che vaga nella fiala. Se il dito esce o si stacca, boom. Per incassare si tocca «Incassa» con un altro dito, senza staccare il primo. Principianti tiene il cerchio più grande e lento, Chirurgo più piccolo e nervoso.</p>
+      <h3>Tre consigli</h3>
+      <p>Bloccate la rotazione dello schermo. Giocate sopra un divano o un cuscino, per la salute del telefono. E prima di cominciare provate la fiala, per scegliere la sensibilità giusta.</p>
+      <h3>I livelli</h3>
+      <p>Soft va bene con tutti. Ironico è per adulti che amano prendersi in giro. Piccante parla di flirt e appuntamenti: sceglietelo solo se tutto il gruppo è d’accordo. E una sfida si può sempre cambiare.</p>
+    </article>
+    <div class="cta"><button class="btn primary big wide" data-go="setup">Nuova partita</button></div>
+  </section>
+
+  <section class="screen stage" id="s-test" aria-labelledby="test-title">
+    <header class="bar"><button class="btn small" data-go="home">Indietro</button><h2 id="test-title">Prova la fiala</h2></header>
+    <p class="test-feedback" id="test-feedback" aria-live="polite">Accendi il sensore, appoggia il telefono sul palmo aperto e prova: parla, ridi, alzati in piedi.</p>
+    <div class="vessel-wrap" id="test-vessel"><canvas id="cv-test" aria-hidden="true"></canvas></div>
+    <div class="meter-block">
+      <div class="meter"><div class="fill" id="test-fill"></div><div class="mark" id="test-mark" style="left:29%"></div></div>
+      <div class="meter-caption"><span>Tremore</span><span id="test-tilt"></span></div>
+      <p class="note">La tacca segna il limite a fine turno, la barra piena quello a inizio turno.</p>
+    </div>
+    <div class="meter-block" id="mic-block" hidden>
+      <div class="meter"><div class="fill" id="mic-fill"></div></div>
+      <div class="meter-caption"><span>Rumore della stanza</span><span></span></div>
+    </div>
+    <div class="seg" id="sens-test" role="radiogroup" aria-label="Sensibilità della fiala">
+      <button type="button" role="radio" data-val="facile">Principianti</button><button type="button" role="radio" data-val="normale">Normale</button><button type="button" role="radio" data-val="chirurgo">Chirurgo</button>
+    </div>
+    <div class="two">
+      <button class="btn primary" id="test-on" type="button">Accendi il sensore</button>
+      <button class="btn" id="test-mic" type="button">Prova il microfono</button>
+    </div>
+  </section>
+
+  <section class="screen" id="s-turn" aria-labelledby="turn-name">
+    <p class="turn-round" id="turn-round"></p>
+    <div class="turn-main">
+      <h2 class="big-name" id="turn-name"></h2>
+      <p class="turn-sub">tocca a te.</p>
+      <p class="turn-note" id="turn-note" hidden></p>
+      <p class="turn-instr" id="turn-instr"></p>
+      <p class="turn-score" id="turn-score"></p>
+    </div>
+    <div class="stack">
+      <button class="btn primary big wide" id="turn-go" type="button">Accendi la fiala</button>
+      <button class="btn plain" id="quit-1" type="button">Esci dalla partita</button>
+    </div>
+  </section>
+
+  <section class="screen stage" id="s-play" aria-label="Fiala in mano">
+    <div class="vignette" id="vignette" aria-hidden="true"></div>
+    <header class="play-top"><button class="btn small" id="abort-btn" type="button">Annulla</button><span id="play-name"></span><span id="play-round"></span></header>
+    <div class="ticket slot-card" id="ticket">
+      <div class="ticket-head"><span>La tua sfida</span><button class="btn small" id="change-btn" type="button">Cambia sfida</button></div>
+      <p class="ticket-text" id="challenge" aria-live="polite"></p>
+    </div>
+    <div class="info-card slot-card" id="calib-card"><p id="calib-text"></p></div>
+    <div class="info-card slot-card" id="transit-card"><p class="transit-title" id="transit-title"></p><p id="transit-text"></p></div>
+    <div class="vessel-wrap" id="play-vessel">
+      <canvas id="cv-play" aria-hidden="true"></canvas>
+      <div class="readout"><span class="loot" id="loot"></span><span class="loot-label" id="loot-label"></span></div>
+      <p class="hint" id="hint" aria-live="assertive"></p>
+    </div>
+    <div class="meter-block" id="meter-block">
+      <div class="meter"><div class="fill" id="meter-fill"></div></div>
+      <div class="meter-caption"><span id="meter-label">Pericolo</span><span id="clock"></span></div>
+    </div>
+    <div class="comp-slot" id="comp-slot">
+      <p class="comp" id="comp" hidden><b>Complicazione:</b> <span id="comp-text"></span></p>
+      <p class="comp-wait" id="comp-wait"></p>
+    </div>
+    <div class="play-actions">
+      <button class="btn primary big wide" id="bank-btn" type="button">Incassa</button>
+      <button class="btn primary big wide" id="take-btn" type="button" hidden>Presa</button>
+    </div>
+  </section>
+
+  <section class="screen" id="s-boom" aria-labelledby="boom-title">
+    <canvas id="cv-boom" aria-hidden="true"></canvas>
+    <div class="boom-inner">
+      <h2 class="boom-title" id="boom-title">Boom!</h2>
+      <p class="boom-cause" id="boom-cause"></p>
+      <p class="boom-lost" id="boom-lost"></p>
+      <p class="boom-quip" id="boom-quip"></p>
+      <div class="penance" id="penance"><p class="pen-head" id="pen-head"></p><p class="pen-text" id="pen-text"></p></div>
+      <button class="btn primary big wide" id="boom-next" type="button">Avanti</button>
+    </div>
+  </section>
+
+  <section class="screen scroll" id="s-next" aria-labelledby="next-q">
+    <div class="center-col">
+      <div class="next-head" id="next-head"></div>
+      <h2 class="next-q" id="next-q"></h2>
+      <div class="pick" id="pick-list"></div>
+      <p class="note" id="next-note"></p>
+    </div>
+  </section>
+
+  <section class="screen scroll" id="s-round" aria-labelledby="round-title">
+    <h2 class="round-title" id="round-title"></h2>
+    <ol class="board" id="round-board"></ol>
+    <p class="round-note" id="round-note"></p>
+    <div class="stack">
+      <button class="btn primary big wide" id="round-go" type="button">Avanti</button>
+      <button class="btn plain" id="quit-2" type="button">Esci dalla partita</button>
+    </div>
+  </section>
+
+  <section class="screen scroll" id="s-final" aria-labelledby="final-winner">
+    <p class="final-kicker" id="final-kicker">Ha vinto</p>
+    <h2 class="big-name" id="final-winner"></h2>
+    <p class="final-score" id="final-score"></p>
+    <ol class="board" id="final-board"></ol>
+    <div class="awards" id="final-awards"></div>
+    <div class="stack">
+      <button class="btn primary big wide" id="again-btn" type="button">Rivincita</button>
+      <div class="two"><button class="btn" id="setup-btn" type="button">Cambia giocatori</button><button class="btn" id="menu-btn" type="button">Menu</button></div>
+    </div>
+  </section>
+
+</main>
+
+<div class="overlay" id="ov-mode" hidden role="dialog" aria-modal="true" aria-labelledby="ov-mode-title">
+  <div class="sheet">
+    <h3 id="ov-mode-title">Il sensore di movimento qui non risponde</h3>
+    <p id="mode-msg"></p>
+    <button class="btn primary wide" id="mode-touch" type="button">Gioca in modalità dito</button>
+    <button class="btn wide" id="mode-retry" type="button">Riprova col sensore</button>
+  </div>
+</div>
+
+<div class="overlay" id="ov-silence" hidden role="dialog" aria-modal="true" aria-labelledby="ov-sil-title">
+  <div class="sheet">
+    <h3 id="ov-sil-title">Silenzio in sala</h3>
+    <p>Due secondi di silenzio: il telefono ascolta il rumore di fondo della stanza.</p>
+    <div class="meter"><div class="fill" id="sil-fill"></div></div>
+  </div>
+</div>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<div class="flash" id="flash" aria-hidden="true"></div>
+
+<script>
+/*__CONTENT__*/
+</script>
+<script>
+/*__APP__*/
+</script>
+</body>
+</html>

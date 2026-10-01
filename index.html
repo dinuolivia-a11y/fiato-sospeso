@@ -1,0 +1,1960 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Fiato Sospeso</title>
+<meta name="description" content="Il numero più pericoloso della serata: tenere in mano una fiala di nitroglicerina mentre tutti cercano di farti ridere.">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icons/icon-192.png" type="image/png">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Fiato Sospeso">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="theme-color" content="#FFF8EE" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#181A42" media="(prefers-color-scheme: dark)">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Ultra&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#FFF8EE; --stage:#FFFFFF; --ink:#1F2150; --ink-2:#45487C; --muted:#6A6C94;
+  --red:#D6322B; --on-red:#FFFFFF; --gold:#EBA51F; --on-gold:#1F2150;
+  --card:#FFFFFF; --edge:#1F2150; --shadow:#1F2150; --track:#EFE5D5;
+  --ok:#2E9A66; --warn:#E39A12; --bad:#D6322B; --focus:#2F66F5; --vig:214,50,43;
+  --display:"Ultra","Rockwell Extra Bold","Rockwell",Georgia,serif;
+  --text:"Bricolage Grotesque","Avenir Next","Segoe UI",system-ui,-apple-system,sans-serif;
+  color-scheme:light;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --paper:#181A42; --stage:#343A86; --ink:#F7EFE3; --ink-2:#DAD4EF; --muted:#A9ACD9;
+    --red:#FF5E4B; --on-red:#1A1C47; --gold:#FFC444; --on-gold:#1A1C47;
+    --card:#24275E; --edge:#F7EFE3; --shadow:#0B0C29; --track:#2E3274;
+    --ok:#52D69C; --warn:#FFC444; --bad:#FF5E4B; --focus:#9CB8FF; --vig:255,94,75;
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#181A42; --stage:#343A86; --ink:#F7EFE3; --ink-2:#DAD4EF; --muted:#A9ACD9;
+  --red:#FF5E4B; --on-red:#1A1C47; --gold:#FFC444; --on-gold:#1A1C47;
+  --card:#24275E; --edge:#F7EFE3; --shadow:#0B0C29; --track:#2E3274;
+  --ok:#52D69C; --warn:#FFC444; --bad:#FF5E4B; --focus:#9CB8FF; --vig:255,94,75;
+  color-scheme:dark;
+}
+
+*,*::before,*::after{box-sizing:border-box}
+[hidden]{display:none !important}
+:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+html{height:100%;scroll-padding-top:env(safe-area-inset-top,0px);background:var(--paper)}
+body{margin:0;height:100%;background:var(--paper);color:var(--ink);font-family:var(--text);font-size:17px;line-height:1.45;
+  -webkit-font-smoothing:antialiased;-webkit-text-size-adjust:100%;overscroll-behavior:none;-webkit-tap-highlight-color:transparent}
+h1,h2,h3{margin:0;line-height:1.1;font-weight:800}
+p{margin:0}
+button{font:inherit;color:inherit}
+#app{position:relative;height:100%;max-width:720px;margin:0 auto;overflow:hidden}
+
+.screen{position:absolute;inset:0;display:none;flex-direction:column;gap:14px;
+  padding:14px max(18px,env(safe-area-inset-right,0px)) 16px max(18px,env(safe-area-inset-left,0px))}
+.screen.active{display:flex;animation:fade .18s ease-out}
+.screen.scroll{overflow-y:auto;-webkit-overflow-scrolling:touch;gap:18px;padding-bottom:0}
+@keyframes fade{from{opacity:0}to{opacity:1}}
+
+/* pulsanti */
+.btn{appearance:none;-webkit-appearance:none;display:inline-flex;align-items:center;justify-content:center;gap:8px;
+  min-height:54px;padding:12px 18px;border:3px solid var(--edge);border-radius:16px;background:var(--card);color:var(--ink);
+  font-weight:800;font-size:17px;line-height:1.1;text-align:center;box-shadow:4px 4px 0 var(--shadow);cursor:pointer;
+  user-select:none;-webkit-user-select:none;touch-action:manipulation}
+.btn:active{transform:translate(3px,3px);box-shadow:1px 1px 0 var(--shadow)}
+.btn:focus-visible,.opt:focus-visible,.seg [role=radio]:focus-visible,.switch:focus-visible,.x:focus-visible{outline:3px solid var(--focus);outline-offset:3px}
+.btn.primary{background:var(--gold);color:var(--on-gold)}
+.btn.big{font-family:var(--display);font-weight:400;font-size:25px;min-height:68px;letter-spacing:.01em}
+.btn.small{min-height:40px;padding:6px 12px;font-size:15px;border-width:2px;border-radius:12px;box-shadow:2px 2px 0 var(--shadow)}
+.btn.plain{background:transparent;border-color:transparent;box-shadow:none;text-decoration:underline;text-underline-offset:4px;min-height:44px}
+.btn.plain:active{transform:none}
+.btn[disabled]{opacity:.5;cursor:default;transform:none;box-shadow:2px 2px 0 var(--shadow)}
+.btn.wide{width:100%}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.two .span{grid-column:1/-1}
+.stack{display:grid;gap:10px}
+.note{font-size:15px;color:var(--muted)}
+
+/* home */
+#s-home{justify-content:space-between;text-align:center;padding-top:20px}
+.sign-wrap{padding-top:36px}
+.sign{position:relative;display:inline-flex;flex-direction:column;align-items:center;padding:12px 26px 16px;
+  background:var(--gold);color:var(--on-gold);border:4px solid var(--edge);border-radius:20px;box-shadow:6px 6px 0 var(--shadow);
+  font-family:var(--display);font-weight:400;font-size:clamp(46px,14vw,78px);line-height:.95;transform:rotate(-2.5deg)}
+.sign::before,.sign::after{content:"";position:absolute;bottom:100%;width:4px;height:36px;background:var(--edge);border-radius:2px;margin-bottom:4px}
+.sign::before{left:20%}
+.sign::after{right:20%}
+.lead{max-width:30ch;margin:0 auto;font-size:18px;color:var(--ink-2);text-wrap:balance}
+.vessel-wrap{position:relative;flex:1 1 auto;min-height:150px}
+.vessel-wrap canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
+#home-vessel{min-height:120px;max-height:290px}
+.home-actions{display:grid;gap:12px}
+
+/* barre e blocchi */
+.bar{display:flex;align-items:center;gap:12px}
+.bar h2{font-family:var(--display);font-weight:400;font-size:25px}
+.block{display:grid;gap:10px}
+.block h3{font-size:19px}
+.add{display:flex;gap:10px}
+.field{flex:1;min-width:0;height:54px;padding:0 14px;border:3px solid var(--edge);border-radius:14px;background:var(--card);color:var(--ink);font:inherit;font-size:18px}
+.field::placeholder{color:var(--muted)}
+.field:focus-visible{outline:3px solid var(--focus);outline-offset:2px}
+.plist{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:8px}
+.plist:empty{display:none}
+.plist li{display:inline-flex;align-items:center;gap:2px;padding:3px 3px 3px 14px;border:2px solid var(--edge);border-radius:999px;background:var(--card);font-weight:700}
+.x{appearance:none;width:36px;height:36px;border:0;border-radius:50%;background:transparent;color:var(--ink);font-size:24px;line-height:1;cursor:pointer}
+.levels{display:grid;gap:10px}
+.opt{appearance:none;display:grid;gap:2px;text-align:left;padding:12px 14px;border:3px solid var(--edge);border-radius:14px;background:var(--card);color:var(--ink);cursor:pointer;box-shadow:3px 3px 0 var(--shadow)}
+.opt b{font-size:18px}
+.opt span{font-size:15px;color:var(--ink-2)}
+.opt[aria-checked="true"]{background:var(--gold);color:var(--on-gold)}
+.opt[aria-checked="true"] span{color:var(--on-gold)}
+.seg{display:flex;gap:8px}
+.seg [role=radio]{appearance:none;flex:1;min-height:48px;padding:8px 4px;border:3px solid var(--edge);border-radius:12px;background:var(--card);color:var(--ink);font-weight:800;font-size:15px;cursor:pointer}
+.seg [aria-checked="true"]{background:var(--gold);color:var(--on-gold);box-shadow:3px 3px 0 var(--shadow)}
+.switches{gap:8px}
+.switch{appearance:none;display:flex;align-items:center;justify-content:space-between;gap:14px;width:100%;padding:12px 14px;border:3px solid var(--edge);border-radius:14px;background:var(--card);color:var(--ink);text-align:left;cursor:pointer}
+.switch span{display:grid;gap:2px}
+.switch b{font-size:17px}
+.switch small{font-size:14px;color:var(--ink-2);line-height:1.35}
+.switch i{flex:none;position:relative;width:54px;height:32px;border-radius:999px;border:3px solid var(--edge);background:var(--track)}
+.switch i::after{content:"";position:absolute;top:3px;left:3px;width:20px;height:20px;border-radius:50%;background:var(--edge);transition:transform .15s}
+.switch[aria-checked="true"] i{background:var(--gold)}
+.switch[aria-checked="true"] i::after{transform:translateX(22px);background:var(--on-gold)}
+.cta{position:sticky;bottom:0;margin-top:auto;padding:14px 0 16px;background:linear-gradient(to bottom,rgba(0,0,0,0),var(--paper) 30%)}
+
+/* regole */
+.rules{display:grid;gap:10px;max-width:36em}
+.rules h3{font-size:19px;margin-top:10px}
+.rules p{color:var(--ink-2)}
+.rules .intro{font-size:19px;color:var(--ink)}
+
+/* palco */
+.stage{background:radial-gradient(ellipse 85% 50% at 50% 55%,var(--stage) 0%,rgba(0,0,0,0) 72%),var(--paper)}
+.test-feedback{min-height:2.9em;font-weight:800;font-size:18px;text-align:center;text-wrap:balance}
+#test-vessel{min-height:140px}
+
+/* turno */
+#s-turn{justify-content:space-between;text-align:center}
+.turn-round{color:var(--muted);font-weight:800}
+.turn-main{display:grid;gap:10px;justify-items:center}
+.big-name{font-family:var(--display);font-weight:400;font-size:clamp(46px,16vw,96px);line-height:.95;overflow-wrap:anywhere}
+.turn-sub{font-size:22px;font-weight:800}
+.turn-note{max-width:32ch;padding:8px 12px;border:2px dashed var(--red);border-radius:12px;font-weight:700}
+.turn-instr{max-width:32ch;color:var(--ink-2);font-size:18px}
+.turn-score{color:var(--muted);font-weight:700}
+
+/* gioco */
+#s-play{--card-h:clamp(132px,22vh,200px);--comp-h:70px;gap:10px;padding-top:10px;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
+#s-play.active{display:grid;grid-template-columns:minmax(0,1fr);grid-template-rows:auto var(--card-h) minmax(0,1fr) auto var(--comp-h) auto}
+.play-top{grid-row:1}
+.slot-card{grid-row:2;height:100%;min-height:0}
+#play-vessel{grid-row:3}
+#meter-block{grid-row:4}
+.comp-slot{grid-row:5;height:100%;min-height:0}
+.play-actions{grid-row:6}
+#s-play > :not(.vignette){position:relative;z-index:1}
+.vignette{position:absolute;inset:0;z-index:0;pointer-events:none;opacity:0;
+  background:radial-gradient(ellipse at 50% 55%,rgba(var(--vig),0) 45%,rgba(var(--vig),.7) 100%)}
+.play-top{display:flex;justify-content:space-between;align-items:center;gap:8px}
+#play-name{font-family:var(--display);font-size:23px;line-height:1.15;flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;text-align:center}
+#play-round{color:var(--muted);font-weight:800;font-size:15px;white-space:nowrap;flex:none}
+#abort-btn{flex:none;min-height:36px;padding:4px 10px;font-size:14px;font-weight:800}
+.ticket,.info-card{background:var(--card);border:3px solid var(--edge);border-radius:16px;box-shadow:4px 4px 0 var(--shadow)}
+.ticket{display:flex;flex-direction:column;overflow:hidden;padding:10px 14px 12px}
+.ticket-head{flex:none;display:flex;justify-content:space-between;align-items:center;gap:10px;padding-bottom:8px;margin-bottom:10px;border-bottom:2px dashed var(--edge);font-weight:800;font-size:15px;color:var(--ink-2)}
+.ticket-text{flex:1 1 auto;min-height:0;overflow:hidden;font-size:24px;font-weight:700;line-height:1.25;text-wrap:pretty}
+.ticket-text strong,.comp strong,.pen-text strong{font-weight:800;background:linear-gradient(transparent 58%,rgba(235,165,31,.5) 58%)}
+.info-card{display:flex;flex-direction:column;justify-content:center;overflow:hidden;padding:12px 14px;font-size:19px;font-weight:700;text-align:center;text-wrap:balance}
+.transit-title{font-family:var(--display);font-weight:400;font-size:27px;line-height:1.05;margin-bottom:6px}
+#play-vessel{min-height:150px;touch-action:none}
+#cv-play{touch-action:none}
+.readout{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;pointer-events:none;
+  color:#1A1C47;text-shadow:0 0 16px rgba(255,248,238,.75)}
+.blind .readout{color:#FFF8EE;text-shadow:0 0 12px rgba(0,0,0,.5)}
+.loot{font-family:var(--display);font-size:clamp(44px,15vw,90px);line-height:1}
+.loot-label{font-weight:800;font-size:15px}
+.meter-block{display:grid;gap:6px}
+.meter{position:relative;height:18px;border:3px solid var(--edge);border-radius:999px;background:var(--track);overflow:hidden}
+.meter .fill{position:absolute;left:0;top:0;bottom:0;width:0;background:var(--ok)}
+.meter .fill.warn{background:var(--warn)}
+.meter .fill.bad{background:var(--bad)}
+.meter .mark{position:absolute;top:0;bottom:0;width:3px;margin-left:-1.5px;background:var(--edge)}
+.meter-caption{display:flex;justify-content:space-between;gap:10px;font-size:14px;font-weight:700;color:var(--muted)}
+.meter-block.blind .meter{opacity:.25}
+.meter-block.blind .fill{visibility:hidden}
+.comp{height:100%;overflow:hidden;border:3px dashed var(--red);border-radius:14px;padding:8px 12px;font-weight:600;font-size:17px;line-height:1.3}
+.comp-wait{height:100%;display:flex;align-items:center;justify-content:center;padding:0 12px;border:3px dashed var(--track);border-radius:14px;color:var(--muted);font-weight:700;font-size:15px;text-align:center}
+.comp-wait:empty{border-color:transparent}
+.comp b{font-weight:800}
+.comp.pulse{animation:comp .6s ease-out}
+@keyframes comp{0%{background:rgba(var(--vig),.3);transform:scale(.97)}100%{background:rgba(var(--vig),0);transform:none}}
+.hint{position:absolute;left:50%;bottom:4px;z-index:2;transform:translateX(-50%);padding:5px 14px;border-radius:999px;background:var(--red);color:var(--on-red);font-weight:800;font-size:17px;white-space:nowrap;pointer-events:none}
+.hint:empty{display:none}
+.play-actions{display:grid;gap:10px}
+
+/* esplosione */
+#s-boom{background:var(--red);color:var(--on-red);overflow-y:auto}
+#cv-boom{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+.boom-inner{position:relative;margin:auto 0;display:grid;gap:12px;text-align:center}
+.boom-title{font-family:var(--display);font-weight:400;font-size:clamp(56px,17vw,130px);line-height:.9;animation:pop .55s cubic-bezier(.2,1.5,.45,1) both}
+@keyframes pop{0%{transform:scale(.2) rotate(-8deg);opacity:0}100%{transform:none;opacity:1}}
+.boom-cause{font-size:22px;font-weight:800;text-wrap:balance}
+.boom-lost{font-size:18px;font-weight:700}
+.boom-quip{font-size:17px;opacity:.9}
+.penance{margin-top:6px;background:var(--card);color:var(--ink);border:3px solid var(--edge);border-radius:16px;box-shadow:4px 4px 0 var(--shadow);padding:12px 14px;text-align:left}
+.pen-head{font-weight:800;font-size:15px;color:var(--ink-2);padding-bottom:6px;margin-bottom:8px;border-bottom:2px dashed var(--edge)}
+.pen-text{font-size:20px;font-weight:700;line-height:1.3}
+
+/* consegna, giri, finale */
+#s-next,#s-round,#s-final{text-align:center}
+.center-col{margin:auto 0;display:grid;gap:16px;padding:18px 0}
+.next-head{display:grid;gap:4px;justify-items:center;padding-top:12px}
+.plus{font-family:var(--display);font-size:clamp(64px,22vw,120px);line-height:.95}
+.next-quip{font-size:19px;font-weight:800}
+.next-sub{color:var(--ink-2);font-weight:700;max-width:32ch}
+.next-q{font-family:var(--display);font-weight:400;font-size:27px;margin-top:6px}
+.pick{display:grid;gap:10px}
+.pick .btn:not(.big){font-size:21px;min-height:60px}
+#next-note{padding-bottom:4px}
+.round-title{font-family:var(--display);font-weight:400;font-size:32px;padding-top:12px}
+.board{list-style:none;margin:0;padding:0;display:grid;gap:8px;counter-reset:pos;text-align:left}
+.board li{display:flex;align-items:center;gap:12px;padding:10px 14px;border:3px solid var(--edge);border-radius:14px;background:var(--card);font-weight:700;counter-increment:pos}
+.board li::before{content:counter(pos);font-family:var(--display);font-size:20px;min-width:1.3em;text-align:center}
+.board .nm{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.board .bm{color:var(--muted);font-size:14px;white-space:nowrap}
+.board .sc{font-weight:800;font-size:22px;font-variant-numeric:tabular-nums}
+.board li.first{background:var(--gold);color:var(--on-gold)}
+.board li.first .bm{color:var(--on-gold)}
+.round-note{font-weight:700;color:var(--ink-2)}
+.final-kicker{font-weight:800;font-size:20px;color:var(--ink-2);padding-top:14px}
+.final-score{font-weight:800;font-size:20px;margin-top:-6px}
+.awards{display:grid;gap:8px;text-align:left}
+.award{padding:10px 14px;border:3px dashed var(--edge);border-radius:14px}
+.award b{display:block;font-family:var(--display);font-weight:400;font-size:20px;line-height:1.2}
+.award span{color:var(--ink-2);font-weight:600}
+#s-round .stack,#s-final .stack{margin-top:auto;padding-bottom:18px}
+
+/* sovrapposizioni */
+.overlay{position:fixed;inset:0;z-index:30;display:flex;align-items:flex-end;justify-content:center;
+  padding:16px 16px calc(16px + env(safe-area-inset-bottom,0px));background:rgba(11,12,41,.55)}
+.sheet{width:100%;max-width:520px;display:grid;gap:12px;background:var(--card);color:var(--ink);border:3px solid var(--edge);border-radius:20px;box-shadow:6px 6px 0 var(--shadow);padding:18px}
+.sheet h3{font-family:var(--display);font-weight:400;font-size:24px;line-height:1.15}
+.sheet p{color:var(--ink-2)}
+.toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));z-index:40;max-width:min(92vw,480px);
+  padding:12px 16px;border:3px solid var(--edge);border-radius:14px;background:var(--card);color:var(--ink);font-weight:700;
+  box-shadow:4px 4px 0 var(--shadow);opacity:0;transform:translate(-50%,16px);pointer-events:none;transition:opacity .2s,transform .2s}
+.toast.on{opacity:1;transform:translate(-50%,0)}
+.flash{position:fixed;inset:0;z-index:50;background:#FFF8EE;opacity:0;pointer-events:none}
+.flash.go{animation:flash .45s ease-out}
+@keyframes flash{0%{opacity:.85}100%{opacity:0}}
+
+/* telefono in orizzontale */
+@media (orientation: landscape) and (max-height: 560px){
+  #home-vessel{display:none}
+  #s-home,#s-turn,#s-boom{overflow-y:auto}
+  .sign-wrap{padding-top:30px}
+  #s-play{--card-h:clamp(96px,32vh,170px);--comp-h:54px}
+  #s-play.active{grid-template-columns:minmax(0,1fr) minmax(0,1.2fr);
+    grid-template-rows:auto var(--card-h) var(--comp-h) auto minmax(0,1fr);column-gap:18px;row-gap:8px;
+    grid-template-areas:"top top" "vessel card" "vessel comp" "vessel meter" "vessel actions"}
+  .play-top{grid-area:top}
+  .slot-card{grid-area:card}
+  #play-vessel{grid-area:vessel;min-height:0}
+  #meter-block{grid-area:meter}
+  .comp-slot{grid-area:comp}
+  .play-actions{grid-area:actions;align-self:end}
+  .btn.big{min-height:58px;font-size:22px}
+}
+
+@media (prefers-reduced-motion: reduce){
+  .screen.active,.boom-title,.comp.pulse{animation:none}
+  .switch i::after,.toast{transition:none}
+}
+</style>
+</head>
+<body>
+<main id="app">
+
+  <section class="screen active" id="s-home" aria-labelledby="home-title">
+    <div class="sign-wrap">
+      <h1 class="sign" id="home-title"><span>Fiato</span><span>Sospeso</span></h1>
+    </div>
+    <p class="lead">Il numero più pericoloso della serata: tenere in mano una fiala di nitroglicerina mentre tutti cercano di farti ridere.</p>
+    <div class="vessel-wrap" id="home-vessel"><canvas id="cv-home" aria-hidden="true"></canvas></div>
+    <div class="home-actions">
+      <button class="btn primary big wide" data-go="setup">Nuova partita</button>
+      <div class="two">
+        <button class="btn" data-go="rules">Come si gioca</button>
+        <button class="btn" data-go="test">Prova la fiala</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="screen scroll" id="s-setup" aria-labelledby="setup-title">
+    <header class="bar"><button class="btn small" data-go="home">Indietro</button><h2 id="setup-title">Nuova partita</h2></header>
+    <div class="block">
+      <h3>Chi gioca</h3>
+      <div class="add">
+        <input class="field" id="name-in" type="text" maxlength="16" placeholder="Scrivi un nome" autocomplete="off" autocapitalize="words" spellcheck="false" enterkeyhint="done" aria-label="Nome di chi gioca">
+        <button class="btn" id="add-btn" type="button">Aggiungi</button>
+      </div>
+      <ul class="plist" id="plist" aria-live="polite"></ul>
+      <p class="note" id="pnote"></p>
+    </div>
+    <div class="block">
+      <h3 id="lv-h">Livello delle sfide</h3>
+      <div class="levels" id="levels" role="radiogroup" aria-labelledby="lv-h">
+        <button class="opt" type="button" role="radio" data-val="soft"><b>Soft</b><span>Leggero e gentile: va bene con tutti.</span></button>
+        <button class="opt" type="button" role="radio" data-val="ironico"><b>Ironico</b><span>Per adulti: figuracce, confessioni e prese in giro affettuose.</span></button>
+        <button class="opt" type="button" role="radio" data-val="piccante"><b>Piccante</b><span>Flirt, cotte e appuntamenti. Solo se tutto il gruppo è d’accordo.</span></button>
+      </div>
+    </div>
+    <div class="block">
+      <h3 id="rd-h">Durata</h3>
+      <div class="seg" id="rounds" role="radiogroup" aria-labelledby="rd-h">
+        <button type="button" role="radio" data-val="2">2 giri</button><button type="button" role="radio" data-val="3">3 giri</button><button type="button" role="radio" data-val="5">5 giri</button>
+      </div>
+    </div>
+    <div class="block">
+      <h3 id="se-h">Sensibilità della fiala</h3>
+      <div class="seg" id="sens" role="radiogroup" aria-labelledby="se-h">
+        <button type="button" role="radio" data-val="facile">Principianti</button><button type="button" role="radio" data-val="normale">Normale</button><button type="button" role="radio" data-val="chirurgo">Chirurgo</button>
+      </div>
+      <p class="note">Nel dubbio, dal menu c’è «Prova la fiala». In modalità dito la stessa scelta rende il cerchio più grande e lento, oppure più piccolo e nervoso.</p>
+    </div>
+    <div class="block switches">
+      <button class="switch" type="button" role="switch" data-key="night"><span><b>Modalità notte</b><small>Il telefono ascolta la stanza: si gioca sussurrando.</small></span><i aria-hidden="true"></i></button>
+      <button class="switch" type="button" role="switch" data-key="pen"><span><b>Penitenze</b><small>Chi fa esplodere la fiala paga pegno.</small></span><i aria-hidden="true"></i></button>
+      <button class="switch" type="button" role="switch" data-key="sound"><span><b>Suoni</b><small>Battito del cuore, sfrigolio e botto finale.</small></span><i aria-hidden="true"></i></button>
+      <button class="switch" type="button" role="switch" data-key="forceTouch"><span><b>Modalità dito</b><small>Senza sensore di movimento: un dito dentro un cerchio che si sposta.</small></span><i aria-hidden="true"></i></button>
+    </div>
+    <div class="cta"><button class="btn primary big wide" id="start-btn" type="button">Inizia la partita</button></div>
+  </section>
+
+  <section class="screen scroll" id="s-rules" aria-labelledby="rules-title">
+    <header class="bar"><button class="btn small" data-go="home">Indietro</button><h2 id="rules-title">Come si gioca</h2></header>
+    <article class="rules">
+      <p class="intro">Il telefono diventa una fiala di nitroglicerina. A turno la tenete in mano: più a lungo resiste, più punti fate. Ma ogni tremito la rende più pericolosa.</p>
+      <h3>Il tuo turno</h3>
+      <p>Tocca «Accendi la fiala» e appoggia il telefono in piano sul palmo aperto, a faccia in su. Dopo il conto alla rovescia compare la tua sfida: leggila e falla, senza far tremare la mano. Se il conto non finisce mai, tocca due volte «Annulla».</p>
+      <h3>I punti</h3>
+      <p>Finché la fiala resta intera, i punti in gioco crescono sempre più in fretta. Ma cresce anche l’instabilità: all’inizio regge quasi tutto, dopo mezzo minuto basta un sospiro. Quando vuoi, tocca «Incassa» con delicatezza e i punti sono tuoi. Se esplode prima, li perdi tutti.</p>
+      <h3>Il pubblico</h3>
+      <p>Gli altri possono fare di tutto per farti ridere: facce, imitazioni, battute. Tutto tranne toccarti. E ridere fa tremare le mani.</p>
+      <h3>Le complicazioni</h3>
+      <p>Ogni 15 secondi arriva una complicazione: alzati, chiudi gli occhi, cambia mano. Alcune cambiano le regole del turno. Una volta per turno puoi cambiare la sfida, se proprio non ti va.</p>
+      <h3>La consegna</h3>
+      <p>Dopo il tuo turno scegli a chi passare la fiala e gliela consegni ancora accesa, palmo a palmo. Chi la riceve tocca «Presa». Se esplode durante la consegna i punti sono salvi, ma a voi due tocca una penitenza di coppia.</p>
+      <h3>Giri e vittoria</h3>
+      <p>In ogni giro tutti tengono la fiala una volta. Il giro dopo lo comincia chi è più indietro in classifica. Alla fine vince chi ha più punti.</p>
+      <h3>Modalità notte</h3>
+      <p>Il telefono ascolta anche la stanza: se c’è troppo rumore, la fiala esplode. Si gioca sussurrando, ed è perfetta quando in casa qualcuno dorme.</p>
+      <h3>Modalità dito</h3>
+      <p>Se il sensore di movimento non funziona, o se vi va così: si tiene un dito dentro un cerchio che vaga nella fiala. Se il dito esce o si stacca, boom. Per incassare si tocca «Incassa» con un altro dito, senza staccare il primo. Principianti tiene il cerchio più grande e lento, Chirurgo più piccolo e nervoso.</p>
+      <h3>Tre consigli</h3>
+      <p>Bloccate la rotazione dello schermo. Giocate sopra un divano o un cuscino, per la salute del telefono. E prima di cominciare provate la fiala, per scegliere la sensibilità giusta.</p>
+      <h3>I livelli</h3>
+      <p>Soft va bene con tutti. Ironico è per adulti che amano prendersi in giro. Piccante parla di flirt e appuntamenti: sceglietelo solo se tutto il gruppo è d’accordo. E una sfida si può sempre cambiare.</p>
+    </article>
+    <div class="cta"><button class="btn primary big wide" data-go="setup">Nuova partita</button></div>
+  </section>
+
+  <section class="screen stage" id="s-test" aria-labelledby="test-title">
+    <header class="bar"><button class="btn small" data-go="home">Indietro</button><h2 id="test-title">Prova la fiala</h2></header>
+    <p class="test-feedback" id="test-feedback" aria-live="polite">Accendi il sensore, appoggia il telefono sul palmo aperto e prova: parla, ridi, alzati in piedi.</p>
+    <div class="vessel-wrap" id="test-vessel"><canvas id="cv-test" aria-hidden="true"></canvas></div>
+    <div class="meter-block">
+      <div class="meter"><div class="fill" id="test-fill"></div><div class="mark" id="test-mark" style="left:29%"></div></div>
+      <div class="meter-caption"><span>Tremore</span><span id="test-tilt"></span></div>
+      <p class="note">La tacca segna il limite a fine turno, la barra piena quello a inizio turno.</p>
+    </div>
+    <div class="meter-block" id="mic-block" hidden>
+      <div class="meter"><div class="fill" id="mic-fill"></div></div>
+      <div class="meter-caption"><span>Rumore della stanza</span><span></span></div>
+    </div>
+    <div class="seg" id="sens-test" role="radiogroup" aria-label="Sensibilità della fiala">
+      <button type="button" role="radio" data-val="facile">Principianti</button><button type="button" role="radio" data-val="normale">Normale</button><button type="button" role="radio" data-val="chirurgo">Chirurgo</button>
+    </div>
+    <div class="two">
+      <button class="btn primary" id="test-on" type="button">Accendi il sensore</button>
+      <button class="btn" id="test-mic" type="button">Prova il microfono</button>
+    </div>
+  </section>
+
+  <section class="screen" id="s-turn" aria-labelledby="turn-name">
+    <p class="turn-round" id="turn-round"></p>
+    <div class="turn-main">
+      <h2 class="big-name" id="turn-name"></h2>
+      <p class="turn-sub">tocca a te.</p>
+      <p class="turn-note" id="turn-note" hidden></p>
+      <p class="turn-instr" id="turn-instr"></p>
+      <p class="turn-score" id="turn-score"></p>
+    </div>
+    <div class="stack">
+      <button class="btn primary big wide" id="turn-go" type="button">Accendi la fiala</button>
+      <button class="btn plain" id="quit-1" type="button">Esci dalla partita</button>
+    </div>
+  </section>
+
+  <section class="screen stage" id="s-play" aria-label="Fiala in mano">
+    <div class="vignette" id="vignette" aria-hidden="true"></div>
+    <header class="play-top"><button class="btn small" id="abort-btn" type="button">Annulla</button><span id="play-name"></span><span id="play-round"></span></header>
+    <div class="ticket slot-card" id="ticket">
+      <div class="ticket-head"><span>La tua sfida</span><button class="btn small" id="change-btn" type="button">Cambia sfida</button></div>
+      <p class="ticket-text" id="challenge" aria-live="polite"></p>
+    </div>
+    <div class="info-card slot-card" id="calib-card"><p id="calib-text"></p></div>
+    <div class="info-card slot-card" id="transit-card"><p class="transit-title" id="transit-title"></p><p id="transit-text"></p></div>
+    <div class="vessel-wrap" id="play-vessel">
+      <canvas id="cv-play" aria-hidden="true"></canvas>
+      <div class="readout"><span class="loot" id="loot"></span><span class="loot-label" id="loot-label"></span></div>
+      <p class="hint" id="hint" aria-live="assertive"></p>
+    </div>
+    <div class="meter-block" id="meter-block">
+      <div class="meter"><div class="fill" id="meter-fill"></div></div>
+      <div class="meter-caption"><span id="meter-label">Pericolo</span><span id="clock"></span></div>
+    </div>
+    <div class="comp-slot" id="comp-slot">
+      <p class="comp" id="comp" hidden><b>Complicazione:</b> <span id="comp-text"></span></p>
+      <p class="comp-wait" id="comp-wait"></p>
+    </div>
+    <div class="play-actions">
+      <button class="btn primary big wide" id="bank-btn" type="button">Incassa</button>
+      <button class="btn primary big wide" id="take-btn" type="button" hidden>Presa</button>
+    </div>
+  </section>
+
+  <section class="screen" id="s-boom" aria-labelledby="boom-title">
+    <canvas id="cv-boom" aria-hidden="true"></canvas>
+    <div class="boom-inner">
+      <h2 class="boom-title" id="boom-title">Boom!</h2>
+      <p class="boom-cause" id="boom-cause"></p>
+      <p class="boom-lost" id="boom-lost"></p>
+      <p class="boom-quip" id="boom-quip"></p>
+      <div class="penance" id="penance"><p class="pen-head" id="pen-head"></p><p class="pen-text" id="pen-text"></p></div>
+      <button class="btn primary big wide" id="boom-next" type="button">Avanti</button>
+    </div>
+  </section>
+
+  <section class="screen scroll" id="s-next" aria-labelledby="next-q">
+    <div class="center-col">
+      <div class="next-head" id="next-head"></div>
+      <h2 class="next-q" id="next-q"></h2>
+      <div class="pick" id="pick-list"></div>
+      <p class="note" id="next-note"></p>
+    </div>
+  </section>
+
+  <section class="screen scroll" id="s-round" aria-labelledby="round-title">
+    <h2 class="round-title" id="round-title"></h2>
+    <ol class="board" id="round-board"></ol>
+    <p class="round-note" id="round-note"></p>
+    <div class="stack">
+      <button class="btn primary big wide" id="round-go" type="button">Avanti</button>
+      <button class="btn plain" id="quit-2" type="button">Esci dalla partita</button>
+    </div>
+  </section>
+
+  <section class="screen scroll" id="s-final" aria-labelledby="final-winner">
+    <p class="final-kicker" id="final-kicker">Ha vinto</p>
+    <h2 class="big-name" id="final-winner"></h2>
+    <p class="final-score" id="final-score"></p>
+    <ol class="board" id="final-board"></ol>
+    <div class="awards" id="final-awards"></div>
+    <div class="stack">
+      <button class="btn primary big wide" id="again-btn" type="button">Rivincita</button>
+      <div class="two"><button class="btn" id="setup-btn" type="button">Cambia giocatori</button><button class="btn" id="menu-btn" type="button">Menu</button></div>
+    </div>
+  </section>
+
+</main>
+
+<div class="overlay" id="ov-mode" hidden role="dialog" aria-modal="true" aria-labelledby="ov-mode-title">
+  <div class="sheet">
+    <h3 id="ov-mode-title">Il sensore di movimento qui non risponde</h3>
+    <p id="mode-msg"></p>
+    <button class="btn primary wide" id="mode-touch" type="button">Gioca in modalità dito</button>
+    <button class="btn wide" id="mode-retry" type="button">Riprova col sensore</button>
+  </div>
+</div>
+
+<div class="overlay" id="ov-silence" hidden role="dialog" aria-modal="true" aria-labelledby="ov-sil-title">
+  <div class="sheet">
+    <h3 id="ov-sil-title">Silenzio in sala</h3>
+    <p>Due secondi di silenzio: il telefono ascolta il rumore di fondo della stanza.</p>
+    <div class="meter"><div class="fill" id="sil-fill"></div></div>
+  </div>
+</div>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<div class="flash" id="flash" aria-hidden="true"></div>
+
+<script>
+/* Fiato Sospeso — contenuti.
+   {X} e {Y} diventano nomi di altri giocatori.
+   Una sfida che comincia con "!" richiede la voce alta: in modalità notte viene saltata. */
+
+const SFIDE = {
+  soft: [
+    "Ripeti due volte, sempre più veloce: «Trentatré trentini entrarono a Trento, tutti e trentatré trotterellando».",
+    "Racconta il sogno più assurdo che ricordi. Gli altri possono farti domande.",
+    "Fai il verso di tre animali diversi: gli altri indovinano quali.",
+    "Alzati in piedi, fai una giravolta completa e torna a sederti.",
+    "Elenca cinque cose gialle senza mai dire «ehm». Se ti blocchi, ricomincia.",
+    "Descrivi {X} con tre aggettivi. Il gruppo vota se sono azzeccati.",
+    "!Canta il ritornello di una canzone per bambini con la voce di un cantante d’opera.",
+    "Racconta la tua mattina come la telecronaca della finale dei Mondiali.",
+    "Qual è il cibo che proprio non sopporti? Spiega perché, con passione.",
+    "Chiudi gli occhi e di’ i nomi di tutti i presenti, nell’ordine in cui sono seduti.",
+    "Parla per 15 secondi di un oggetto della stanza come se fosse un tesoro inestimabile.",
+    "Fai l’annuncio del capotreno: il treno per il divano viaggia con 40 minuti di ritardo.",
+    "Racconta una cosa che sai fare e che nessuno qui immagina.",
+    "{X} sceglie una parola a caso. Tu la usi in una frase che commuova tutti.",
+    "Imita la risata di {X}. Attenzione: potrebbe venire da ridere anche a te.",
+    "Conta alla rovescia da 21 a 1, saltando i numeri pari.",
+    "Descrivi la tua colazione ideale con la voce di un documentario sugli animali.",
+    "Guarda {X} negli occhi per 10 secondi, in silenzio assoluto.",
+    "Sei un robot che si sta scaricando: parla sempre più piano e sempre più lento.",
+    "Per 20 secondi rispondi solo «sì» o «no» alle domande di tutti.",
+    "Racconta la tua ultima figuraccia, anche piccola.",
+    "Recita i giorni della settimana al contrario, con la voce di un pirata.",
+    "Fai tre complimenti sinceri a {X}, senza distogliere lo sguardo.",
+    "Inventa una pubblicità di 10 secondi per il divano di questa casa.",
+    "Tutti ti fanno una smorfia nello stesso momento. Resisti 5 secondi.",
+    "Spiega come si prepara il caffè a qualcuno che arriva dal futuro.",
+    "Pronuncia il tuo nome al contrario, lettera per lettera.",
+    "Racconta la vacanza più bella della tua vita in tre frasi esatte.",
+    "Muovi solo le sopracciglia per 10 secondi, come se stessi dicendo una cosa seria.",
+    "Fatti un’intervista: le domande con una voce, le risposte con un’altra.",
+    "Di’ il titolo di un film per ogni lettera della parola «FIALA».",
+    "Dirigi il traffico come un vigile, usando solo la mano libera.",
+    "Racconta una barzelletta. Se nessuno ride, ne racconti un’altra.",
+    "{X} ti fa tre domande a raffica: rispondi senza pensarci.",
+    "Descrivi la tua giornata tipo come se fosse un film d’azione.",
+    "Mantieni una faccia impassibile mentre tutti ti fissano per 10 secondi.",
+    "Canticchia una canzone famosa senza parole: gli altri devono indovinarla.",
+    "Cinque cose che porteresti su un’isola deserta. Il telefono non vale.",
+    "!Fai il verso della gallina tre volte, sempre più forte. La mano resta immobile.",
+    "Spiega le regole di questo gioco a {X} come se avesse cinque anni.",
+    "Alzati, fai tre passi avanti e tre indietro, poi torna al tuo posto.",
+    "Qual era il lavoro dei tuoi sogni alle elementari? Fai vedere come lo faresti.",
+    "Dai a ogni persona presente un nome d’arte da circo.",
+    "Mima un mestiere con la mano libera: gli altri indovinano quale."
+  ],
+  ironico: [
+    "Confessa l’ultima bugia che hai detto. Il gruppo decide se crederti.",
+    "Imita {X} quando è di cattivo umore. Senza pietà.",
+    "Qual è la cosa più inutile che hai comprato quest’anno? Difendila come un affare.",
+    "Il peggior regalo che hai mai ricevuto. Se chi te l’ha fatto è qui, pazienza.",
+    "!Fai il comizio di chi si candida ad amministratore di condominio. Promesse assurde obbligatorie.",
+    "Chi dei presenti durerebbe meno in un’apocalisse zombie? Motiva.",
+    "Racconta l’ultima riunione di lavoro, o di famiglia, come se fosse un reality.",
+    "Una cosa che ti imbarazza ancora, anche se sono passati anni.",
+    "{X} ti fa una domanda. Devi rispondere con sincerità assoluta.",
+    "Sei un navigatore satellitare che ha perso la pazienza: dai indicazioni a {X}.",
+    "Qual è l’abitudine di {X} che ti fa più ridere? Imitala.",
+    "Recensisci questa serata come un critico gastronomico spietato.",
+    "La scusa più assurda che hai usato per non andare da qualche parte.",
+    "!Canta una canzone qualsiasi come se fosse una disperata canzone d’amore.",
+    "Vendi a {X} un oggetto invisibile a un prezzo esagerato. {X} decide se comprarlo.",
+    "Qual è il tuo talento più inutile? Dimostralo, se ci riesci senza muovere la mano.",
+    "Il peggior appuntamento della tua vita, anche di lavoro, in 20 secondi.",
+    "Dai un soprannome a ogni persona presente. Affettuoso, più o meno.",
+    "Sei l’assistente vocale di questa casa: gli altri ti fanno richieste, tu rispondi.",
+    "Fai il discorso di ringraziamento per l’Oscar alla miglior fiala tenuta in mano.",
+    "Chi dei presenti chiameresti per nascondere un cadavere? E chi mai e poi mai?",
+    "Leggi il biscotto della fortuna di {X}. Lo inventi tu, e dev’essere profetico.",
+    "Sei un cameriere snob: presenta il menù di stasera con disprezzo.",
+    "Chi dei presenti finirebbe più facilmente in un talent show? A fare cosa?",
+    "Racconta una litigata stupida che hai avuto di recente, dando ragione all’altra persona.",
+    "Parla per 15 secondi senza mai usare la lettera A.",
+    "Detta una lettera formale di scuse alla tua dieta.",
+    "Imita un tuo parente mentre ti dà un consiglio che non hai chiesto.",
+    "Il complimento più strano che ti abbiano mai fatto.",
+    "Fai le previsioni del tempo per il tuo umore di domani.",
+    "Cosa c’è nella tua cronologia di ricerca? Solo la versione presentabile.",
+    "Conversa con {X} usando solo domande. Chi risponde con un’affermazione perde.",
+    "Cosa hai pensato la prima volta che hai incontrato {X}?",
+    "Lascia a {X} un vocale immaginario, di quelli infiniti.",
+    "La tua giornata perfetta, se nessuno potesse giudicarti.",
+    "Fai la pubblicità di un profumo: voce sussurrata e nome inventato.",
+    "Qual è la regola di casa tua che gli ospiti non capiscono mai?",
+    "{X} e {Y} ti raccontano una scusa ciascuno. Tu scegli la più credibile.",
+    "Presentati come ti presenterebbe tua madre a una festa.",
+    "Una cosa che hai sempre fatto finta di capire.",
+    "Fai un brindisi commosso e un po’ esagerato in onore di {X}.",
+    "Qual è la cosa più da anziani che fai già adesso?",
+    "Come sarai tra trent’anni al pranzo della domenica? Fai la scena.",
+    "Racconta un tuo piccolo vizio segreto. Piccolo, eh."
+  ],
+  piccante: [
+    "Racconta il tuo primo bacio: dove, quando e com’è andata davvero.",
+    "La frase da rimorchio più terribile che ti hanno detto, o che hai usato tu.",
+    "Fai la tua faccia più seducente a {X} per 5 secondi. Nessuno dei due deve ridere.",
+    "Descrivi il tuo appuntamento ideale in tre dettagli.",
+    "Chi dei presenti ha lo sguardo più magnetico? Dillo guardando quella persona negli occhi.",
+    "Leggi con la voce più sensuale che hai: «La lavastoviglie ha finito. La svuoti tu?»",
+    "Qual è la cosa più audace che hai fatto per conquistare qualcuno?",
+    "Il peggior appuntamento della tua vita, in 20 secondi.",
+    "Il dettaglio che ti fa perdere la testa in una persona.",
+    "Fai a {X} un complimento audace, ma elegante.",
+    "Dichiara il tuo amore alla fiala, come in un film romantico. Senza emozionarla troppo.",
+    "Hai mai mandato un messaggio alla persona sbagliata? Racconta tutto.",
+    "La canzone più sexy di sempre, secondo te. Canticchiane un pezzo.",
+    "Descrivi {X} come il personaggio principale di un romanzo rosa.",
+    "La tua cotta più imbarazzante.",
+    "Racconta un appuntamento finito in modo del tutto inaspettato.",
+    "Mima con la mano libera il tuo modo di flirtare. Gli altri commentano.",
+    "Chi dei presenti ha il passato sentimentale più movimentato? Motiva, con tatto.",
+    "Voce da radio di mezzanotte: «Stanotte, cari ascoltatori… parliamo di bollette.»",
+    "La cosa più romantica che qualcuno abbia mai fatto per te.",
+    "Cosa noti per primo in una persona che ti piace? La verità.",
+    "Fai la scena di come ti comporti al primo appuntamento.",
+    "La dichiarazione d’amore più goffa che hai fatto o ricevuto.",
+    "Tu e {X} vi guardate come in un film romantico per 10 secondi. Chi ride per primo ha perso.",
+    "Il tuo punto debole in fatto di seduzione. Il cibo vale.",
+    "Descrivi il bacio perfetto usando solo parole di cucina.",
+    "Con chi dei presenti fingeresti di essere una coppia per farti offrire il dolce al ristorante?",
+    "Rispondi di getto: meglio un bacio rubato o una lettera d’amore? Perché?",
+    "Ordina una pizza al telefono come in un film romantico anni Settanta.",
+    "La cosa più folle che hai fatto per una persona che ti piaceva.",
+    "Cosa trovi più affascinante in una persona, fisicamente? Rispondi con classe.",
+    "{X} ti fa una domanda piccante. Se non vuoi rispondere, canti al posto della risposta.",
+    "La tua definizione di «tentazione», in una frase.",
+    "Racconta un sogno romantico, o imbarazzante, che ricordi bene.",
+    "Recita la lista della spesa come se fosse una poesia d’amore.",
+    "Ti è mai capitato di fingere di essere qualcun altro per fare colpo? Racconta.",
+    "Chi dei presenti sarebbe la spalla perfetta per rimorchiare? E chi il disastro totale?",
+    "Da 1 a 10, quanto è irresistibile il tuo fascino? Gli altri possono contestare.",
+    "L’outfit che ti fa sentire irresistibile. Descrivilo nei dettagli.",
+    "Fai l’occhiolino a ogni persona presente, una alla volta, senza ridere.",
+    "Il messaggio più imbarazzante che hai mandato a qualcuno che ti piaceva.",
+    "Sussurra a {X} la frase più romantica che conosci. A distanza di sicurezza."
+  ]
+};
+
+/* fx: double = punti doppi, blind = indicatore spento, calm = tregua di 6 secondi,
+   hot = più instabile ma punti più veloci. noisy = esclusa in modalità notte,
+   motion = solo con il sensore di movimento. */
+const COMPLICAZIONI = {
+  tutte: [
+    { t: "Alzati in piedi. Lentamente." },
+    { t: "Chiudi gli occhi fino a quando incassi.", motion: true },
+    { t: "Da adesso il pubblico può fare versi e rumori.", noisy: true },
+    { t: "Passa la fiala nell’altra mano.", motion: true },
+    { t: "{X} si mette davanti a te e ti fissa, senza dire niente." },
+    { t: "Solleva un piede da terra e tienilo su." },
+    { t: "Tutti gli altri cantano una canzone a scelta, rigorosamente stonati.", noisy: true },
+    { t: "Da ora parli solo in rima." },
+    { t: "Sorridi senza mai smettere, anche mentre parli." },
+    { t: "{X} può farti una domanda: rispondi subito." },
+    { t: "Porta la fiala all’altezza degli occhi, piano piano.", motion: true },
+    { t: "Tendi il braccio davanti a te e tienilo teso.", motion: true },
+    { t: "Punti doppi: da ora guadagni il doppio. La fiala però non fa sconti.", fx: "double" },
+    { t: "Buio in sala: l’indicatore di pericolo si spegne. Vai a sensazione.", fx: "blind" },
+    { t: "Respiro profondo: per qualche secondo la fiala si calma.", fx: "calm" },
+    { t: "La fiala si scalda: più instabile, ma i punti corrono più veloci.", fx: "hot" },
+    { t: "Il pubblico può raccontarti barzellette. Anche brutte. Soprattutto brutte." },
+    { t: "Silenzio totale per tutti: ti guardano e basta." },
+    { t: "Racconta quello che stai facendo, come un telecronista." },
+    { t: "Sei su una nave in mezzo alla tempesta. La mano però resta ferma." }
+  ],
+  soft: [
+    { t: "Diventa una statua del museo: immobile e con aria solenne." },
+    { t: "Da ora parli come un personaggio dei cartoni animati." }
+  ],
+  ironico: [
+    { t: "Commenta tutto quello che fa il pubblico, come in una partita di calcio." },
+    { t: "Da ora ogni frase finisce con «…e questo è quanto»." }
+  ],
+  piccante: [
+    { t: "{X} ti fa l’occhiolino ogni tre secondi." },
+    { t: "Sussurra un complimento a {X}." },
+    { t: "Da ora parli con voce sensuale." }
+  ]
+};
+
+const PENITENZE = {
+  soft: [
+    "Parla come un robot fino al tuo prossimo turno.",
+    "Fai un complimento sincero a ogni persona presente.",
+    "Canta «Tanti auguri» a qualcuno che oggi non compie gli anni.",
+    "Cinque saltelli sul posto, con entusiasmo.",
+    "Fino al prossimo giro, quando qualcuno dice il tuo nome rispondi «Presente!».",
+    "Racconta una barzelletta. Anche brutta.",
+    "Rifai il rumore dell’esplosione che hai appena causato.",
+    "Dai un nome alla fiala e chiedile scusa ufficialmente.",
+    "La tua migliore imitazione di un pinguino.",
+    "Per un giro intero parli di te in terza persona.",
+    "Fai un inchino al pubblico, come a fine spettacolo."
+  ],
+  ironico: [
+    "Chiedi scusa alla fiala in ginocchio. O quasi.",
+    "Fino al tuo prossimo turno, ogni frase finisce con «…e questo è quanto».",
+    "Fai un discorso motivazionale guardando {X} come se fosse uno specchio.",
+    "Racconta la tua figuraccia più grande di sempre.",
+    "Imita il tuo capo, o un professore, quando si arrabbia.",
+    "{X} sceglie il tuo soprannome per il resto della partita.",
+    "Canta il ritornello che sceglie il gruppo, con tutto il sentimento che hai.",
+    "Per un giro intero rispondi a tutto con un proverbio.",
+    "Fai la telecronaca della tua esplosione, al rallentatore.",
+    "Confessa un tuo piccolo vizio segreto."
+  ],
+  piccante: [
+    "Fai una dichiarazione d’amore drammatica… al divano.",
+    "Racconta il tuo appuntamento più imbarazzante.",
+    "La tua camminata più seducente fino alla porta e ritorno.",
+    "Il gruppo sceglie una persona: le dedichi una serenata di 10 secondi.",
+    "Descrivi il tuo tipo ideale con tre parole. Gli altri dicono se somiglia a qualcuno qui.",
+    "Leggi con voce sensuale gli ingredienti di un prodotto a caso della cucina.",
+    "Rispondi con sincerità a una domanda piccante scelta dal gruppo, oppure balla per 10 secondi.",
+    "L’occhiolino più seducente che sai fare, a chi hai di fronte.",
+    "Saluta i fan come una star del cinema, bacio al volo compreso.",
+    "Rifai la faccia che fai quando vedi una persona che ti piace."
+  ]
+};
+
+const PENITENZE_COPPIA = {
+  soft: [
+    "Fate insieme il verso di un animale scelto dal gruppo.",
+    "Cantate insieme una canzone per bambini, a due voci.",
+    "Stringetevi la mano e presentatevi come ambasciatori di due paesi inventati.",
+    "Improvvisate insieme un balletto di 5 secondi.",
+    "Fatevi un complimento a vicenda, guardandovi negli occhi."
+  ],
+  ironico: [
+    "Litigate per 10 secondi su un argomento assurdo scelto dal gruppo.",
+    "Girate in coppia uno spot pubblicitario per la fiala.",
+    "Scusatevi a vicenda in modo esageratamente formale.",
+    "Recitate una scena da telenovela: «Non sei tu, sono io.»",
+    "Commentate l’incidente appena successo come due telecronisti."
+  ],
+  piccante: [
+    "Guardatevi negli occhi per 10 secondi senza ridere.",
+    "Fate una dichiarazione d’amore a due voci… alla pizza.",
+    "Recitate l’addio di due innamorati in stazione, in 10 secondi.",
+    "Ballate un lento immaginario per 5 secondi, senza toccarvi.",
+    "Descrivetevi a vicenda il vostro appuntamento ideale."
+  ]
+};
+
+const QUIP_BANK = [
+  "Applausi. La fiala respira di nuovo.",
+  "Nessuno è esploso. Per ora.",
+  "Mani da chirurgo.",
+  "Il pubblico non ci credeva.",
+  "Punti in banca, nervi a pezzi.",
+  "La fiala ringrazia per la delicatezza."
+];
+
+const QUIP_BOOM = [
+  "Il vicino ha sentito tutto.",
+  "Ridere costa caro.",
+  "La fiala non perdona.",
+  "Sipario.",
+  "Pezzi ovunque. In senso figurato.",
+  "Ecco perché si chiama nitroglicerina."
+];
+
+</script>
+<script>
+(() => {
+'use strict';
+
+/* ================= utilità ================= */
+const $$ = (s, r = document) => Array.from(r.querySelectorAll(s));
+const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
+const now = () => performance.now();
+const pick = a => a[Math.floor(Math.random() * a.length)];
+const smooth = (a, b, x) => { const t = clamp((x - a) / (b - a), 0, 1); return t * t * (3 - 2 * t); };
+const shuffle = a => { for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); const t = a[i]; a[i] = a[j]; a[j] = t; } return a; };
+const fmtSec = s => s.toFixed(1).replace('.', ',') + ' s';
+const pts = n => (n === 1 ? '1 punto' : n + ' punti');
+const listNames = arr => arr.length <= 1 ? (arr[0] || '') : arr.slice(0, -1).join(', ') + ' e ' + arr[arr.length - 1];
+const percentile = (arr, q) => { const s = arr.filter(Number.isFinite).sort((a, b) => a - b); if (!s.length) return -60; return s[clamp(Math.floor(q * (s.length - 1)), 0, s.length - 1)]; };
+const reduceMotion = !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+const camel = s => s.replace(/-([a-z0-9])/g, (_, c) => c.toUpperCase());
+
+const el = {};
+$$('[id]').forEach(n => { el[camel(n.id)] = n; });
+
+/* ================= costanti ================= */
+const LEVELS = ['soft', 'ironico', 'piccante'];
+const SENS = {
+  facile:   { T0: 4.6, Tf: 1.45, transit: 3.2, tilt: 54, dB: 24, touchSpeed: 0.72, touchSize: 1.22, touchReach: 0.82 },
+  normale:  { T0: 3.6, Tf: 1.05, transit: 2.5, tilt: 48, dB: 20, touchSpeed: 1, touchSize: 1, touchReach: 1 },
+  chirurgo: { T0: 2.7, Tf: 0.75, transit: 1.9, tilt: 42, dB: 16, touchSpeed: 1.45, touchSize: 0.78, touchReach: 1.18 }
+};
+const TAU = 22;          // secondi: velocità con cui la fiala diventa instabile
+const COMP_EVERY = 15;   // secondi tra una complicazione e l'altra
+const MIN_BANK = 5;      // secondi prima di poter incassare
+const ROT_W = 0.018;     // peso della rotazione nel tremore
+
+const CAUSE = {
+  shake: 'Hai tremato troppo.',
+  tilt: 'L’hai inclinata troppo.',
+  noise: 'Troppo rumore in sala.',
+  slip: 'Il dito è scivolato fuori dal cerchio.',
+  lift: 'Hai staccato il dito.'
+};
+const CAUSE_TRANSIT = {
+  shake: 'Troppi scossoni nel passaggio.',
+  tilt: 'Inclinata troppo nel passaggio.',
+  noise: 'Troppo rumore in sala.'
+};
+const HINT = { shake: 'Stai tremando!', tilt: 'Tienila in piano!', noise: 'Silenzio!', slip: 'Resta nel cerchio!', lift: '' };
+
+/* ================= stato ================= */
+const G = {
+  names: [], level: 'ironico', rounds: 3, sens: 'normale',
+  night: false, pen: true, sound: true, forceTouch: false,
+  players: [], round: 1, played: new Set(), cur: 0, prev: 0,
+  mode: 'touch', active: false, noiseBase: null, decks: null
+};
+const P = {
+  phase: 'idle', held: 0, loot: 0, mult: 1, T0: 3.6, Tf: 1.05, compNext: COMP_EVERY,
+  fx: { blind: false, hot: false, calmUntil: 0 }, exceedAt: 0, lastUI: 0, grace: 0,
+  calibOk: 0, calibSamples: [], micSamples: [], changeUsed: false, beatNext: 0, r: 0,
+  vp: {}, touch: { id: null, x: 0, y: 0 }, ph: [0, 0, 0, 0], wander: 0,
+  shownLoot: -1, shownBank: -1, hint: '', live: false, prepOk: 0, after: null, cause: ''
+};
+let screen = 'home';
+const V = {};
+
+/* ================= preferenze ================= */
+const STORE = 'fiato-sospeso-v1';
+function loadPrefs() {
+  try {
+    const s = JSON.parse(localStorage.getItem(STORE) || 'null');
+    if (!s || typeof s !== 'object') return;
+    if (Array.isArray(s.names)) G.names = s.names.filter(n => typeof n === 'string' && n.trim()).slice(0, 10);
+    if (LEVELS.indexOf(s.level) >= 0) G.level = s.level;
+    if ([2, 3, 5].indexOf(s.rounds) >= 0) G.rounds = s.rounds;
+    if (SENS[s.sens]) G.sens = s.sens;
+    ['night', 'pen', 'sound', 'forceTouch'].forEach(k => { if (typeof s[k] === 'boolean') G[k] = s[k]; });
+  } catch (e) { /* niente preferenze salvate */ }
+}
+function savePrefs() {
+  try {
+    localStorage.setItem(STORE, JSON.stringify({ names: G.names, level: G.level, rounds: G.rounds, sens: G.sens, night: G.night, pen: G.pen, sound: G.sound, forceTouch: G.forceTouch }));
+  } catch (e) { /* salvataggio non disponibile */ }
+}
+
+/* ================= tema ================= */
+const theme = { edge: '#1F2150' };
+function refreshTheme() {
+  try { const v = getComputedStyle(document.documentElement).getPropertyValue('--edge').trim(); if (v) theme.edge = v; } catch (e) {}
+}
+if (window.matchMedia) {
+  const mq = window.matchMedia('(prefers-color-scheme: dark)');
+  if (mq.addEventListener) mq.addEventListener('change', refreshTheme); else if (mq.addListener) mq.addListener(refreshTheme);
+}
+try { new MutationObserver(refreshTheme).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] }); } catch (e) {}
+
+/* ================= audio ================= */
+const Snd = {
+  ctx: null, out: null, noise: null, hs: null, hg: null,
+  ensure() {
+    try {
+      if (!this.ctx) {
+        const AC = window.AudioContext || window.webkitAudioContext;
+        if (!AC) return;
+        this.ctx = new AC();
+        this.out = this.ctx.createGain(); this.out.gain.value = 0.8; this.out.connect(this.ctx.destination);
+        const len = Math.floor(this.ctx.sampleRate * 1.5), b = this.ctx.createBuffer(1, len, this.ctx.sampleRate), d = b.getChannelData(0);
+        for (let i = 0; i < len; i++) d[i] = Math.random() * 2 - 1;
+        this.noise = b;
+      }
+      if (this.ctx.state === 'suspended') this.ctx.resume();
+    } catch (e) { /* audio non disponibile */ }
+  },
+  can() { return !!(this.ctx && G.sound); },
+  env(g, t, peak, a, d) { g.gain.setValueAtTime(0.0001, t); g.gain.exponentialRampToValueAtTime(peak, t + a); g.gain.exponentialRampToValueAtTime(0.0001, t + a + d); },
+  thump(t, v) {
+    const c = this.ctx, o = c.createOscillator(), g = c.createGain();
+    o.type = 'sine'; o.frequency.setValueAtTime(72, t); o.frequency.exponentialRampToValueAtTime(40, t + 0.14);
+    this.env(g, t, v, 0.012, 0.19); o.connect(g); g.connect(this.out); o.start(t); o.stop(t + 0.24);
+  },
+  beat(i) {
+    if (!this.can() || G.night) return;
+    try { const t = this.ctx.currentTime + 0.01, v = 0.3 + 0.5 * clamp(i, 0, 1); this.thump(t, v); this.thump(t + 0.17, v * 0.55); } catch (e) {}
+  },
+  hissOn() {
+    if (!this.can() || G.night || this.hs) return;
+    try {
+      const c = this.ctx, s = c.createBufferSource(), f = c.createBiquadFilter(), g = c.createGain();
+      s.buffer = this.noise; s.loop = true; f.type = 'bandpass'; f.frequency.value = 2800; f.Q.value = 0.7; g.gain.value = 0;
+      s.connect(f); f.connect(g); g.connect(this.out); s.start(); this.hs = s; this.hg = g;
+    } catch (e) {}
+  },
+  hiss(v) { if (this.hg) { try { this.hg.gain.setTargetAtTime(clamp(v, 0, 1) * 0.1, this.ctx.currentTime, 0.05); } catch (e) {} } },
+  hissOff() { if (this.hs) { try { this.hs.stop(); } catch (e) {} } this.hs = null; this.hg = null; },
+  boom() {
+    if (!this.can()) return;
+    try {
+      const c = this.ctx, t = c.currentTime + 0.005, soft = G.night;
+      const s = c.createBufferSource(), f = c.createBiquadFilter(), g = c.createGain();
+      s.buffer = this.noise; f.type = 'lowpass';
+      f.frequency.setValueAtTime(soft ? 900 : 2400, t); f.frequency.exponentialRampToValueAtTime(110, t + 1.3);
+      g.gain.setValueAtTime(soft ? 0.22 : 1, t); g.gain.exponentialRampToValueAtTime(0.0001, t + (soft ? 0.7 : 1.5));
+      s.connect(f); f.connect(g); g.connect(this.out); s.start(t); s.stop(t + 1.6);
+      const o = c.createOscillator(), og = c.createGain();
+      o.type = 'sine'; o.frequency.setValueAtTime(115, t); o.frequency.exponentialRampToValueAtTime(30, t + 0.9);
+      og.gain.setValueAtTime(soft ? 0.2 : 0.95, t); og.gain.exponentialRampToValueAtTime(0.0001, t + 1.0);
+      o.connect(og); og.connect(this.out); o.start(t); o.stop(t + 1.05);
+    } catch (e) {}
+  },
+  notes(freqs, gap, v, type) {
+    if (!this.can()) return;
+    try {
+      const c = this.ctx, t0 = c.currentTime + 0.01;
+      freqs.forEach((fr, i) => {
+        const o = c.createOscillator(), g = c.createGain(), t = t0 + i * gap;
+        o.type = type; o.frequency.value = fr; this.env(g, t, v, 0.015, 0.45);
+        o.connect(g); g.connect(this.out); o.start(t); o.stop(t + 0.5);
+      });
+    } catch (e) {}
+  },
+  chime() { this.notes([523.25, 659.25, 783.99, 1046.5], 0.09, G.night ? 0.05 : 0.18, 'triangle'); },
+  ding() { if (!G.night) this.notes([880, 1318.5], 0.12, 0.13, 'sine'); }
+};
+
+/* ================= sensore di movimento ================= */
+const Motion = {
+  attached: false, count: 0, last: -1e9, prevT: 0, agit: 0, tilt: 0, gx: 0, gy: 0, zs: 1, lp: null,
+  attach() {
+    if (this.attached) return;
+    this.attached = true;
+    window.addEventListener('devicemotion', e => this.handle(e), { passive: true });
+  },
+  handle(e) {
+    const t = now();
+    const dt = this.prevT ? clamp((t - this.prevT) / 1000, 0.002, 0.2) : 0.016;
+    this.prevT = t;
+    const g = e.accelerationIncludingGravity, a = e.acceleration;
+    let ax = null, ay = null, az = null;
+    if (g && g.x != null && g.y != null && g.z != null) {
+      const k = 1 - Math.exp(-dt / 0.25);
+      if (!this.lp) this.lp = { x: g.x, y: g.y, z: g.z };
+      this.lp.x += (g.x - this.lp.x) * k; this.lp.y += (g.y - this.lp.y) * k; this.lp.z += (g.z - this.lp.z) * k;
+      const m = Math.hypot(this.lp.x, this.lp.y, this.lp.z) || 9.81;
+      this.gx = this.lp.x / m; this.gy = this.lp.y / m;
+      const cz = this.lp.z / m;
+      this.tilt = Math.acos(clamp(Math.abs(cz), 0, 1)) * 57.29578;
+      if (this.tilt < 30) this.zs = cz >= 0 ? 1 : -1;
+      ax = g.x - this.lp.x; ay = g.y - this.lp.y; az = g.z - this.lp.z;
+    }
+    if (a && a.x != null && a.y != null && a.z != null) { ax = a.x; ay = a.y; az = a.z; }
+    if (ax == null) return;
+    let mag = Math.hypot(ax, ay, az);
+    const rr = e.rotationRate;
+    if (rr && (rr.alpha != null || rr.beta != null || rr.gamma != null)) {
+      mag = Math.hypot(mag, Math.hypot(rr.alpha || 0, rr.beta || 0, rr.gamma || 0) * ROT_W);
+    }
+    if (!Number.isFinite(mag)) return;
+    this.agit += (mag - this.agit) * (1 - Math.exp(-dt / 0.06));
+    this.count++; this.last = t;
+  },
+  tx() { return clamp(-this.gx * this.zs * 2.2, -1, 1); },
+  ty() { return clamp(this.gy * this.zs * 2.2, -1, 1); }
+};
+
+async function requestMotion() {
+  if (typeof window.DeviceMotionEvent === 'undefined') return false;
+  if (typeof DeviceMotionEvent.requestPermission === 'function') {
+    try { const r = await DeviceMotionEvent.requestPermission(); if (r !== 'granted') return false; } catch (e) { return false; }
+  }
+  Motion.attach();
+  const start = Motion.count, t0 = now();
+  return new Promise(res => {
+    const iv = setInterval(() => {
+      if (Motion.count - start >= 3) { clearInterval(iv); res(true); }
+      else if (now() - t0 > 1800) { clearInterval(iv); res(false); }
+    }, 80);
+  });
+}
+
+/* ================= microfono (modalità notte) ================= */
+const Mic = {
+  on: false, stream: null, an: null, buf: null, bbuf: null, db: -70,
+  async start() {
+    if (this.on) return true;
+    if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) return false;
+    Snd.ensure();
+    if (!Snd.ctx) return false;
+    try {
+      const s = await navigator.mediaDevices.getUserMedia({ audio: { echoCancellation: false, noiseSuppression: false, autoGainControl: false } });
+      const src = Snd.ctx.createMediaStreamSource(s), an = Snd.ctx.createAnalyser();
+      an.fftSize = 1024; src.connect(an);
+      this.stream = s; this.an = an; this.buf = new Float32Array(an.fftSize); this.bbuf = new Uint8Array(an.fftSize);
+      this.on = true; this.db = -70;
+      return true;
+    } catch (e) { return false; }
+  },
+  read(dt) {
+    if (!this.on) return;
+    const n = this.an.fftSize; let sum = 0;
+    if (this.an.getFloatTimeDomainData) { this.an.getFloatTimeDomainData(this.buf); for (let i = 0; i < n; i++) sum += this.buf[i] * this.buf[i]; }
+    else { this.an.getByteTimeDomainData(this.bbuf); for (let i = 0; i < n; i++) { const v = (this.bbuf[i] - 128) / 128; sum += v * v; } }
+    const db = 20 * Math.log10(Math.sqrt(sum / n) + 1e-7);
+    this.db += (db - this.db) * (1 - Math.exp(-dt / 0.1));
+  },
+  stop() { try { if (this.stream) this.stream.getTracks().forEach(t => t.stop()); } catch (e) {} this.stream = null; this.on = false; }
+};
+function micNeeded() { return !!(G.active && G.night); }
+function releaseMicIfIdle() { if (!micNeeded()) Mic.stop(); }
+function leaveTest() {
+  if (P.phase === 'test') P.phase = 'idle';
+  el.micBlock.hidden = true;
+  el.testMic.hidden = false;
+  el.testOn.hidden = false;
+  el.testOn.disabled = false;
+  el.testMic.disabled = false;
+  el.testFeedback.textContent = 'Accendi il sensore, appoggia il telefono sul palmo aperto e prova: parla, ridi, alzati in piedi.';
+  syncTestButtons();
+  releaseMicIfIdle();
+}
+
+/* ================= schermo sempre acceso ================= */
+let wake = null;
+async function keepAwake() {
+  try {
+    if ('wakeLock' in navigator && !wake && document.visibilityState === 'visible') {
+      wake = await navigator.wakeLock.request('screen');
+      wake.addEventListener('release', () => { wake = null; });
+    }
+  } catch (e) { wake = null; }
+}
+function releaseWake() { try { if (wake) wake.release(); } catch (e) {} wake = null; }
+
+/* ================= la fiala disegnata ================= */
+class Vessel {
+  constructor(canvas) {
+    this.c = canvas; this.g = canvas.getContext('2d');
+    this.rings = []; this.bubbles = []; this.sx = 0; this.sy = 0; this.vx = 0; this.vy = 0; this.emit = 0; this.bub = 0;
+    this.dpr = 1; this.w = 2; this.h = 2; this.resize();
+  }
+  resize() {
+    const r = this.c.getBoundingClientRect(), dpr = Math.min(window.devicePixelRatio || 1, 2);
+    const w = Math.max(2, Math.round(r.width * dpr)), h = Math.max(2, Math.round(r.height * dpr));
+    if (this.c.width !== w || this.c.height !== h) { this.c.width = w; this.c.height = h; }
+    this.w = w; this.h = h; this.dpr = dpr;
+  }
+  geom() { return { cx: this.w / 2, cy: this.h / 2, R: Math.max(10, Math.min(this.w, this.h) / 2 - 10 * this.dpr) }; }
+  draw(dt, p) {
+    p = p || {};
+    const g = this.g, dpr = this.dpr, geo = this.geom(), cx = geo.cx, cy = geo.cy, R = geo.R;
+    g.clearRect(0, 0, this.w, this.h);
+    if (this.w < 40 || this.h < 40) return;
+    const live = clamp(p.live || 0, 0, 1.3), danger = clamp(p.danger || 0, 0, 1);
+    // il liquido scivola dalla parte in cui il telefono si inclina
+    const tx = (p.tx || 0) * R * 0.3, ty = (p.ty || 0) * R * 0.3;
+    this.vx += ((tx - this.sx) * 30 - this.vx * 7) * dt;
+    this.vy += ((ty - this.sy) * 30 - this.vy * 7) * dt;
+    this.sx = clamp(this.sx + this.vx * dt, -R * 0.45, R * 0.45);
+    this.sy = clamp(this.sy + this.vy * dt, -R * 0.45, R * 0.45);
+    const jit = live * R * 0.012;
+    const lx = cx + this.sx + (Math.random() - 0.5) * jit, ly = cy + this.sy + (Math.random() - 0.5) * jit;
+    const heat = clamp(Math.max(danger * 0.85, Math.min(live, 1)), 0, 1);
+    const hue = 44 - 42 * heat;
+    const dim = p.blind ? 0.5 : 1;
+
+    g.save();
+    if (heat > 0.55 && !p.blind) {
+      g.shadowColor = 'hsla(' + hue.toFixed(1) + ',100%,55%,' + ((heat - 0.55) * 1.8).toFixed(2) + ')';
+      g.shadowBlur = 42 * dpr * heat;
+    }
+    const gr = g.createRadialGradient(lx - R * 0.18, ly - R * 0.22, R * 0.04, lx, ly, R * 1.2);
+    gr.addColorStop(0, 'hsl(' + hue.toFixed(1) + ',100%,' + (76 * dim).toFixed(1) + '%)');
+    gr.addColorStop(0.5, 'hsl(' + hue.toFixed(1) + ',92%,' + (56 * dim).toFixed(1) + '%)');
+    gr.addColorStop(1, 'hsl(' + (hue - 4).toFixed(1) + ',86%,' + (32 * dim).toFixed(1) + '%)');
+    g.fillStyle = gr; g.beginPath(); g.arc(cx, cy, R, 0, Math.PI * 2); g.fill();
+    g.restore();
+
+    g.save();
+    g.beginPath(); g.arc(cx, cy, R - 3 * dpr, 0, Math.PI * 2); g.clip();
+    if (!p.blind) {
+      this.emit += (0.7 + live * 16) * dt;
+      while (this.emit >= 1) { this.emit -= 1; this.rings.push({ r: R * 0.04, a: 0.1 + Math.min(live, 1.2) * 0.75 }); }
+    }
+    const sp = R * 0.95;
+    for (let i = this.rings.length - 1; i >= 0; i--) {
+      const q = this.rings[i]; q.r += sp * dt; q.a *= Math.exp(-dt * 1.5);
+      if (q.r > R * 1.3 || q.a < 0.01) { this.rings.splice(i, 1); continue; }
+      g.beginPath(); g.arc(lx, ly, q.r, 0, Math.PI * 2);
+      g.lineWidth = (1.5 + q.a * 5) * dpr; g.strokeStyle = 'rgba(255,255,255,' + (q.a * 0.55).toFixed(3) + ')'; g.stroke();
+      g.beginPath(); g.arc(lx, ly, q.r + 4 * dpr, 0, Math.PI * 2);
+      g.lineWidth = (1 + q.a * 3) * dpr; g.strokeStyle = 'rgba(60,15,0,' + (q.a * 0.2).toFixed(3) + ')'; g.stroke();
+    }
+    if (this.rings.length > 70) this.rings.splice(0, this.rings.length - 70);
+    this.bub += (0.4 + danger * 7 + Math.min(live, 1) * 4) * dt;
+    while (this.bub >= 1) {
+      this.bub -= 1;
+      const an = Math.random() * 6.2832, rd = Math.sqrt(Math.random()) * R * 0.85;
+      this.bubbles.push({ x: cx + Math.cos(an) * rd, y: cy + Math.sin(an) * rd, s: (1.5 + Math.random() * 4) * dpr, life: 0, max: 0.5 + Math.random() * 0.9 });
+    }
+    for (let i = this.bubbles.length - 1; i >= 0; i--) {
+      const b = this.bubbles[i]; b.life += dt; const k = b.life / b.max;
+      if (k >= 1) { this.bubbles.splice(i, 1); continue; }
+      const al = k < 0.8 ? 0.6 : 0.6 * (1 - (k - 0.8) / 0.2);
+      g.beginPath(); g.arc(b.x, b.y, b.s * (0.4 + k), 0, Math.PI * 2);
+      g.lineWidth = 1.3 * dpr; g.strokeStyle = 'rgba(255,255,255,' + al.toFixed(3) + ')'; g.stroke();
+    }
+    if (this.bubbles.length > 80) this.bubbles.splice(0, this.bubbles.length - 80);
+    if (p.blind) { g.fillStyle = 'rgba(20,20,60,0.4)'; g.fillRect(0, 0, this.w, this.h); }
+    if (p.target) {
+      const t = p.target;
+      g.beginPath(); g.arc(t.x, t.y, t.r, 0, Math.PI * 2);
+      g.fillStyle = p.touching ? 'rgba(255,255,255,0.3)' : 'rgba(255,255,255,0.14)'; g.fill();
+      g.setLineDash([10 * dpr, 7 * dpr]); g.lineWidth = 4 * dpr; g.strokeStyle = 'rgba(255,255,255,0.95)'; g.stroke(); g.setLineDash([]);
+      if (p.finger) { g.beginPath(); g.arc(p.finger.x, p.finger.y, 9 * dpr, 0, Math.PI * 2); g.fillStyle = 'rgba(26,28,71,0.8)'; g.fill(); }
+    }
+    g.restore();
+
+    g.beginPath(); g.arc(cx, cy, R, 0, Math.PI * 2);
+    g.lineWidth = 6 * dpr; g.strokeStyle = theme.edge; g.stroke();
+    g.beginPath(); g.arc(cx, cy, R - 10 * dpr, Math.PI * 1.1, Math.PI * 1.42);
+    g.lineWidth = 5 * dpr; g.lineCap = 'round'; g.strokeStyle = 'rgba(255,255,255,0.6)'; g.stroke(); g.lineCap = 'butt';
+  }
+}
+
+/* ================= i cocci dell'esplosione ================= */
+const Boom = {
+  active: false, parts: [], t: 0, c: null, g: null, dpr: 1,
+  start(canvas) {
+    this.c = canvas; this.g = canvas.getContext('2d');
+    const r = canvas.getBoundingClientRect(), dpr = Math.min(window.devicePixelRatio || 1, 2);
+    canvas.width = Math.max(2, Math.round(r.width * dpr)); canvas.height = Math.max(2, Math.round(r.height * dpr));
+    this.dpr = dpr; this.parts = []; this.t = 0;
+    this.g.clearRect(0, 0, canvas.width, canvas.height);
+    if (reduceMotion) { this.active = false; return; }
+    const cx = canvas.width / 2, cy = canvas.height * 0.3, cols = ['#FFC444', '#1A1C47', '#FFF8EE', '#FF8A3D'];
+    for (let i = 0; i < 70; i++) {
+      const a = Math.random() * 6.2832, s = (250 + Math.random() * 750) * dpr;
+      this.parts.push({ k: 'd', x: cx, y: cy, vx: Math.cos(a) * s, vy: Math.sin(a) * s - 200 * dpr, rot: Math.random() * 6, vr: (Math.random() - 0.5) * 14,
+        w: (4 + Math.random() * 10) * dpr, h: (3 + Math.random() * 6) * dpr, c: pick(cols), life: 1.2 + Math.random() * 0.8 });
+    }
+    for (let i = 0; i < 14; i++) {
+      const a = Math.random() * 6.2832, s = (40 + Math.random() * 160) * dpr;
+      this.parts.push({ k: 's', x: cx, y: cy, vx: Math.cos(a) * s, vy: Math.sin(a) * s, r: (20 + Math.random() * 40) * dpr, gr: (60 + Math.random() * 90) * dpr, life: 1.4 + Math.random() * 0.8 });
+    }
+    this.active = true;
+  },
+  draw(dt) {
+    const g = this.g, c = this.c; this.t += dt;
+    g.clearRect(0, 0, c.width, c.height);
+    let alive = 0;
+    for (const p of this.parts) {
+      const k = this.t / p.life; if (k >= 1) continue; alive++;
+      if (p.k === 'd') {
+        p.vy += 1100 * this.dpr * dt; p.vx *= Math.exp(-dt * 0.8); p.x += p.vx * dt; p.y += p.vy * dt; p.rot += p.vr * dt;
+        g.save(); g.translate(p.x, p.y); g.rotate(p.rot); g.globalAlpha = 1 - k * k; g.fillStyle = p.c; g.fillRect(-p.w / 2, -p.h / 2, p.w, p.h); g.restore();
+      } else {
+        p.vx *= Math.exp(-dt * 2); p.vy *= Math.exp(-dt * 2); p.x += p.vx * dt; p.y += p.vy * dt; p.r += p.gr * dt;
+        g.globalAlpha = 0.28 * (1 - k); g.fillStyle = '#FFF8EE'; g.beginPath(); g.arc(p.x, p.y, p.r, 0, 6.2832); g.fill(); g.globalAlpha = 1;
+      }
+    }
+    if (!alive || this.t > 2.6) { this.active = false; g.clearRect(0, 0, c.width, c.height); }
+  }
+};
+
+/* ================= interfaccia ================= */
+let lastSwap = 0, lastPD = 0;
+function show(name) {
+  screen = name; lastSwap = now();
+  $$('.screen').forEach(s => s.classList.toggle('active', s.id === 's-' + name));
+  const s = document.getElementById('s-' + name); if (s) s.scrollTop = 0;
+  refreshTheme();
+  requestAnimationFrame(resizeAll);
+}
+function resizeAll() { Object.keys(V).forEach(k => V[k].resize()); if (screen === 'play') fitPlayTexts(); }
+let toastTimer = 0;
+function toast(msg) {
+  el.toast.textContent = msg; el.toast.classList.add('on');
+  clearTimeout(toastTimer); toastTimer = setTimeout(() => el.toast.classList.remove('on'), 3400);
+}
+function flash() { if (reduceMotion) return; el.flash.classList.remove('go'); void el.flash.offsetWidth; el.flash.classList.add('go'); }
+function setHint(t) { if (P.hint !== t) { P.hint = t; el.hint.textContent = t; } }
+function setReadout(big, label) {
+  if (el.loot.textContent !== big) el.loot.textContent = big;
+  if (el.lootLabel.textContent !== label) el.lootLabel.textContent = label;
+}
+function setMeter(fill, r, cls) {
+  fill.style.width = (clamp(r, 0, 1) * 100).toFixed(1) + '%';
+  const c = 'fill' + (cls != null ? cls : (r > 0.8 ? ' bad' : r > 0.5 ? ' warn' : ''));
+  if (fill.className !== c) fill.className = c;
+}
+function renderText(node, tpl, map) {
+  node.textContent = '';
+  const re = /\{([A-Z])\}/g; let last = 0, m;
+  while ((m = re.exec(tpl))) {
+    if (m.index > last) node.appendChild(document.createTextNode(tpl.slice(last, m.index)));
+    const b = document.createElement('strong'); b.textContent = map[m[1]] || 'qualcuno'; node.appendChild(b);
+    last = re.lastIndex;
+  }
+  if (last < tpl.length) node.appendChild(document.createTextNode(tpl.slice(last)));
+}
+function namesFor(holder) {
+  const others = shuffle(G.players.map((_, i) => i).filter(i => i !== holder));
+  return {
+    X: others.length ? G.players[others[0]].name : 'qualcuno',
+    Y: others.length > 1 ? G.players[others[1]].name : 'qualcun altro'
+  };
+}
+function fitText(node, max, min) {
+  if (!node || node.offsetParent === null) return;
+  let size = max; node.style.fontSize = size + 'px';
+  while (size > min && node.scrollHeight > node.clientHeight + 1) { size -= 1; node.style.fontSize = size + 'px'; }
+}
+function fitPlayTexts() {
+  const wmax = clamp(Math.round(window.innerWidth * 0.058), 19, 27);
+  if (!el.ticket.hidden) fitText(el.challenge, wmax, 14);
+  if (!el.comp.hidden) fitText(el.comp, 17, 12);
+}
+function blurActive() { try { const a = document.activeElement; if (a && a !== document.body && a.blur) a.blur(); } catch (e) {} }
+
+/* ================= mazzi ================= */
+const isLoud = s => s.charAt(0) === '!';
+const cleanText = s => (isLoud(s) ? s.slice(1) : s);
+function mkDeck(arr) { return { arr: arr, order: shuffle(arr.map((_, i) => i)), i: 0 }; }
+function drawFrom(deck, ok) {
+  const n = deck.arr.length;
+  for (let k = 0; k < n * 2 + 2; k++) {
+    if (deck.i >= deck.order.length) { deck.order = shuffle(deck.arr.map((_, i) => i)); deck.i = 0; }
+    const it = deck.arr[deck.order[deck.i++]];
+    if (!ok || ok(it)) return it;
+  }
+  return deck.arr[0];
+}
+function initDecks() {
+  const L = G.level;
+  G.decks = {
+    sfide: mkDeck(SFIDE[L]),
+    comp: mkDeck(COMPLICAZIONI.tutte.concat(COMPLICAZIONI[L] || [])),
+    pen: mkDeck(PENITENZE[L]),
+    penC: mkDeck(PENITENZE_COPPIA[L])
+  };
+}
+
+/* ================= preparazione ================= */
+const switchSyncs = [], radioSyncs = [];
+function renderPlayers() {
+  el.plist.textContent = '';
+  G.names.forEach((n, i) => {
+    const li = document.createElement('li'), sp = document.createElement('span'), x = document.createElement('button');
+    sp.textContent = n; x.type = 'button'; x.className = 'x'; x.textContent = '×'; x.setAttribute('aria-label', 'Rimuovi ' + n);
+    x.addEventListener('click', () => { G.names.splice(i, 1); renderPlayers(); savePrefs(); });
+    li.appendChild(sp); li.appendChild(x); el.plist.appendChild(li);
+  });
+  const n = G.names.length;
+  el.pnote.textContent = n < 2 ? 'Servono almeno 2 giocatori.' : n >= 10 ? 'Siete in 10: il massimo.' : n + ' giocatori. Si arriva fino a 10.';
+  el.startBtn.disabled = n < 2;
+  el.addBtn.disabled = n >= 10;
+}
+function addName() {
+  const v = el.nameIn.value.replace(/\s+/g, ' ').trim().slice(0, 16);
+  if (!v) { el.nameIn.focus(); return; }
+  if (G.names.length >= 10) return;
+  if (G.names.some(n => n.toLowerCase() === v.toLowerCase())) { toast('Questo nome c’è già.'); return; }
+  G.names.push(v); el.nameIn.value = ''; renderPlayers(); savePrefs(); el.nameIn.focus();
+}
+function bindRadio(group, key, parse) {
+  const btns = $$('[role="radio"]', group);
+  const sync = () => btns.forEach(b => { const on = String(G[key]) === b.dataset.val; b.setAttribute('aria-checked', on ? 'true' : 'false'); b.tabIndex = on ? 0 : -1; });
+  btns.forEach((b, i) => {
+    b.addEventListener('click', () => { G[key] = parse ? parse(b.dataset.val) : b.dataset.val; radioSyncs.forEach(f => f()); savePrefs(); });
+    b.addEventListener('keydown', e => {
+      const dir = (e.key === 'ArrowRight' || e.key === 'ArrowDown') ? 1 : (e.key === 'ArrowLeft' || e.key === 'ArrowUp') ? -1 : 0;
+      if (!dir) return;
+      e.preventDefault();
+      const nb = btns[(i + dir + btns.length) % btns.length]; nb.click(); nb.focus();
+    });
+  });
+  radioSyncs.push(sync); sync();
+}
+function bindSwitches() {
+  $$('.switch').forEach(sw => {
+    const key = sw.dataset.key;
+    const sync = () => sw.setAttribute('aria-checked', G[key] ? 'true' : 'false');
+    sw.addEventListener('click', () => { G[key] = !G[key]; sync(); savePrefs(); });
+    switchSyncs.push(sync); sync();
+  });
+}
+
+/* ================= prova la fiala ================= */
+const T = { peak: 0, label: '', labelAt: 0, micT0: 0, base: null, samples: [] };
+function syncTestButtons() {
+  const vis = [el.testOn, el.testMic].filter(b => !b.hidden);
+  [el.testOn, el.testMic].forEach(b => b.classList.toggle('span', vis.length === 1 && vis[0] === b));
+}
+async function testSensor() {
+  Snd.ensure();
+  el.testOn.disabled = true;
+  const ok = await requestMotion();
+  el.testOn.disabled = false;
+  if (ok) {
+    P.phase = 'test'; el.testOn.hidden = true; syncTestButtons();
+    el.testFeedback.textContent = 'Appoggia il telefono sul palmo aperto e prova: parla, ridi, alzati in piedi.';
+  } else {
+    el.testFeedback.textContent = 'Qui il sensore di movimento non risponde. Si può giocare lo stesso, in modalità dito.';
+  }
+}
+async function testMic() {
+  el.testMic.disabled = true;
+  const ok = await Mic.start();
+  el.testMic.disabled = false;
+  if (!ok) { toast('Il microfono non è disponibile qui.'); return; }
+  el.micBlock.hidden = false; el.testMic.hidden = true; syncTestButtons();
+  T.micT0 = now(); T.base = null; T.samples = [];
+  if (P.phase !== 'test') P.phase = 'test';
+  toast('Due secondi di silenzio per misurare la stanza, poi prova a parlare.');
+}
+function tickTest(t, dt) {
+  const S = SENS[G.sens];
+  const live = t - Motion.last < 1000;
+  el.testMark.style.left = (S.Tf / S.T0 * 100).toFixed(1) + '%';
+  if (live) {
+    T.peak = Math.max(Motion.agit, T.peak * Math.exp(-dt / 0.9));
+    const cls = T.peak < S.Tf ? '' : T.peak < S.T0 ? ' warn' : ' bad';
+    setMeter(el.testFill, T.peak / S.T0, cls);
+    el.testTilt.textContent = 'Inclinazione ' + Math.round(Motion.tilt) + '°';
+    let msg;
+    if (Motion.tilt > S.tilt) msg = 'Così è troppo inclinata: esploderebbe.';
+    else if (T.peak < S.Tf * 0.5) msg = 'Ferma come una statua. Perfetto.';
+    else if (T.peak < S.Tf) msg = 'Bene: reggeresti anche a fine turno.';
+    else if (T.peak < S.T0) msg = 'A inizio turno regge, dopo mezzo minuto no.';
+    else msg = 'Così esploderebbe subito.';
+    if (msg !== T.label && t - T.labelAt > 400) { T.label = msg; T.labelAt = t; el.testFeedback.textContent = msg; }
+  }
+  if (Mic.on) {
+    if (T.base == null) { T.samples.push(Mic.db); if (t - T.micT0 > 1800) T.base = clamp(percentile(T.samples.slice(5), 0.3), -90, -30); }
+    else setMeter(el.micFill, Math.max(0, Mic.db - T.base) / S.dB);
+  }
+  P.vp = { tx: Motion.tx(), ty: Motion.ty(), danger: 0.15, live: live ? clamp(T.peak / S.T0, 0, 1.3) : 0.05 };
+}
+
+/* ================= avvio della partita ================= */
+async function startGame() {
+  if (G.names.length < 2) return;
+  Snd.ensure(); blurActive();
+  el.startBtn.disabled = true;
+  let motion = false;
+  if (!G.forceTouch) motion = await requestMotion();
+  if (G.night) {
+    const ok = await Mic.start();
+    if (!ok) { G.night = false; switchSyncs.forEach(f => f()); Mic.stop(); toast('Il microfono non è disponibile: modalità notte spenta.'); }
+  } else Mic.stop();
+  if (!motion && !G.forceTouch) motion = await motionNotice();
+  G.mode = motion ? 'motion' : 'touch';
+  el.startBtn.disabled = false;
+  savePrefs();
+  newGame();
+}
+function motionNotice() {
+  return new Promise(res => {
+    el.modeMsg.textContent = 'Succede dentro alcune app e anteprime. Nessun problema: si gioca in modalità dito, con un dito dentro un cerchio che si sposta nella fiala.';
+    el.ovMode.hidden = false;
+    el.modeTouch.onclick = () => { el.ovMode.hidden = true; res(false); };
+    el.modeRetry.onclick = async () => {
+      el.modeRetry.disabled = true;
+      const ok = await requestMotion();
+      el.modeRetry.disabled = false;
+      if (ok) { el.ovMode.hidden = true; res(true); }
+      else el.modeMsg.textContent = 'Ancora niente: qui il sensore è bloccato. Giocate in modalità dito, oppure aprite il gioco direttamente nel browser del telefono.';
+    };
+    setTimeout(() => { try { el.modeTouch.focus(); } catch (e) {} }, 50);
+  });
+}
+function measureSilence() {
+  return new Promise(res => {
+    el.ovSilence.hidden = false; setMeter(el.silFill, 0, '');
+    const samples = [], t0 = now();
+    const iv = setInterval(() => {
+      samples.push(Mic.db);
+      const k = (now() - t0) / 2200;
+      setMeter(el.silFill, k, '');
+      if (k >= 1) {
+        clearInterval(iv); el.ovSilence.hidden = true;
+        G.noiseBase = clamp(percentile(samples.slice(6), 0.3), -90, -30);
+        res();
+      }
+    }, 50);
+  });
+}
+function newGame() {
+  G.players = G.names.map(n => ({ name: n, score: 0, booms: 0, banks: 0, turns: 0, best: 0, bestBank: 0, hold: 0 }));
+  G.round = 1; G.played = new Set(); G.active = true; G.noiseBase = null;
+  initDecks();
+  const first = Math.floor(Math.random() * G.players.length);
+  keepAwake();
+  const go = () => showTurn(first, 'Ha deciso il caso: si comincia da qui.');
+  if (G.night && Mic.on) measureSilence().then(go); else go();
+}
+function rematch() { G.names = G.players.map(p => p.name); newGame(); }
+
+/* ================= turno ================= */
+function showTurn(idx, note) {
+  G.cur = idx;
+  const p = G.players[idx];
+  el.turnRound.textContent = 'Giro ' + G.round + ' di ' + G.rounds;
+  el.turnName.textContent = p.name;
+  el.turnNote.textContent = note || ''; el.turnNote.hidden = !note;
+  el.turnInstr.textContent = G.mode === 'motion'
+    ? 'Tocca il pulsante, poi appoggia il telefono in piano sul palmo aperto, a faccia in su. Il pubblico prepari le sue facce migliori.'
+    : 'Tocca il pulsante e appoggia un dito dentro il cerchio della fiala. Il pubblico prepari le sue facce migliori.';
+  el.turnScore.textContent = p.turns ? 'Finora: ' + pts(p.score) + '.' : '';
+  show('turn');
+}
+function setPlayLayout(mode) {
+  el.ticket.hidden = mode !== 'armed';
+  el.calibCard.hidden = mode !== 'calib';
+  el.transitCard.hidden = mode !== 'transit';
+  el.bankBtn.hidden = mode === 'transit';
+  el.takeBtn.hidden = mode !== 'transit';
+  if (mode === 'calib') { el.bankBtn.disabled = true; el.bankBtn.textContent = 'Incassa'; }
+  el.comp.hidden = true; el.compWait.hidden = false; el.compWait.textContent = '';
+  el.meterBlock.classList.remove('blind'); el.playVessel.classList.remove('blind');
+  el.vignette.style.opacity = '0'; el.playVessel.style.transform = '';
+  setHint(''); setMeter(el.meterFill, 0); el.clock.textContent = '';
+  el.playName.textContent = G.players[G.cur] ? G.players[G.cur].name : '';
+  el.playRound.textContent = 'Giro ' + G.round + ' di ' + G.rounds;
+  resetAbort();
+}
+function resetAbort() {
+  el.abortBtn.dataset.sure = '';
+  el.abortBtn.textContent = 'Annulla';
+  P.holdLift = false;
+}
+function bindAbort() {
+  let timer = 0;
+  el.abortBtn.addEventListener('pointerdown', () => {
+    const t = now(); P.lastUI = t; P.grace = Math.max(P.grace || 0, t + 2800);
+    P.holdLift = true;
+    clearLiftTimer();
+  });
+  el.abortBtn.addEventListener('click', () => {
+    if (P.phase !== 'calib' && P.phase !== 'armed' && P.phase !== 'transit') return;
+    if (el.abortBtn.dataset.sure === '1') {
+      clearTimeout(timer);
+      const transit = P.phase === 'transit';
+      resetAbort();
+      endHold();
+      showTurn(G.cur, transit ? 'Consegna annullata. Il turno ricomincia da capo.' : 'Turno annullato.');
+      return;
+    }
+    el.abortBtn.dataset.sure = '1';
+    el.abortBtn.textContent = 'Tocca ancora';
+    timer = setTimeout(resetAbort, 2500);
+  });
+}
+function calibTarget() { const g = V.play.geom(); return { x: g.cx, y: g.cy, r: g.R * 0.34 }; }
+function startCalib(idx) {
+  G.cur = idx; Snd.ensure(); keepAwake(); blurActive();
+  show('play'); setPlayLayout('calib');
+  el.calibText.textContent = G.mode === 'motion'
+    ? 'Appoggia il telefono in piano sul palmo aperto, a faccia in su, e non muoverti.'
+    : 'Appoggia un dito dentro il cerchio e tienilo lì.';
+  setReadout('3', 'in posizione');
+  P.phase = 'calib'; P.calibOk = 0; P.calibSamples = []; P.micSamples = [];
+  P.held = 0; P.loot = 0; P.r = 0; P.cause = ''; P.touch.id = null;
+  P.vp = { danger: 0, live: 0.05 };
+}
+function tickCalib(t, dt) {
+  const S = SENS[G.sens];
+  if (G.mode === 'motion') {
+    if (t - Motion.last > 1500) { setHint('Il sensore non risponde…'); P.calibOk = 0; return; }
+    const flat = Motion.tilt < 22, steady = Motion.agit < Math.max(1.4, S.T0 * 0.6);
+    if (flat && steady) { P.calibOk += dt; P.calibSamples.push(Motion.agit); }
+    else P.calibOk = Math.max(0, P.calibOk - dt * 2);
+    setHint(!flat ? 'Mettila in piano, a faccia in su.' : !steady ? 'Ferma la mano, respira.' : '');
+    setMeter(el.meterFill, Motion.agit / S.T0);
+    P.vp = { tx: Motion.tx(), ty: Motion.ty(), danger: 0, live: clamp(Motion.agit / S.T0, 0, 1) };
+  } else {
+    const tg = calibTarget();
+    const inside = P.touch.id != null && Math.hypot(P.touch.x - tg.x, P.touch.y - tg.y) <= tg.r;
+    P.calibOk = inside ? P.calibOk + dt : 0;
+    setHint(inside ? '' : 'Dito dentro il cerchio.');
+    P.vp = { danger: 0, live: 0.04, target: tg, touching: inside, finger: P.touch.id != null ? { x: P.touch.x, y: P.touch.y } : null };
+  }
+  if (G.night && Mic.on) P.micSamples.push(Mic.db);
+  setReadout(String(Math.max(1, Math.ceil(3 - P.calibOk))), 'in posizione');
+  if (P.calibOk >= 3) arm(t);
+}
+function arm(t) {
+  const S = SENS[G.sens];
+  let nf = 0;
+  if (G.mode === 'motion' && P.calibSamples.length > 10) {
+    const arr = P.calibSamples.slice(Math.floor(P.calibSamples.length * 0.4));
+    const m = arr.reduce((a, b) => a + b, 0) / arr.length;
+    const sd = Math.sqrt(arr.reduce((a, b) => a + (b - m) * (b - m), 0) / arr.length);
+    nf = m + 3 * sd;
+  }
+  P.T0 = Math.max(S.T0, nf * 4); P.Tf = Math.max(S.Tf, nf * 2.2);
+  if (G.night && Mic.on && P.micSamples.length > 10) {
+    const base = percentile(P.micSamples, 0.25);
+    G.noiseBase = clamp(G.noiseBase == null ? base : Math.min(G.noiseBase, base), -90, -30);
+  }
+  P.phase = 'armed'; P.held = 0; P.loot = 0; P.r = 0; P.cause = ''; P.mult = 1; P.compNext = COMP_EVERY;
+  P.fx = { blind: false, hot: false, calmUntil: 0 }; P.exceedAt = 0; P.grace = t + 300; P.changeUsed = false;
+  P.beatNext = t; P.shownLoot = -1; P.shownBank = -1; P.wander = 0;
+  P.ph = [Math.random() * 6.28, Math.random() * 6.28, Math.random() * 6.28, Math.random() * 6.28];
+  setPlayLayout('armed');
+  el.changeBtn.disabled = false;
+  el.meterLabel.textContent = 'Pericolo';
+  setReadout('0', 'punti in gioco');
+  newChallenge();
+  Snd.hissOn();
+}
+function newChallenge() {
+  const three = G.players.length >= 3;
+  const tpl = drawFrom(G.decks.sfide, s => (three || s.indexOf('{Y}') < 0) && !(G.night && isLoud(s)));
+  renderText(el.challenge, cleanText(tpl), namesFor(G.cur));
+  fitPlayTexts();
+}
+function changeChallenge() {
+  if (P.phase !== 'armed' || P.changeUsed) return;
+  const t = now(); P.lastUI = t; P.grace = t + 650; P.changeUsed = true;
+  el.changeBtn.disabled = true;
+  newChallenge();
+}
+function newComplication() {
+  const c = drawFrom(G.decks.comp, x => !(x.noisy && G.night) && !(x.motion && G.mode !== 'motion'));
+  renderText(el.compText, c.t, namesFor(G.cur));
+  el.comp.hidden = false; el.compWait.hidden = true;
+  el.comp.classList.remove('pulse'); void el.comp.offsetWidth; el.comp.classList.add('pulse');
+  fitPlayTexts();
+  const t = now();
+  if (c.fx === 'double') P.mult *= 2;
+  else if (c.fx === 'hot') { P.fx.hot = true; P.mult *= 1.5; }
+  else if (c.fx === 'calm') P.fx.calmUntil = t + 6000;
+  else if (c.fx === 'blind') { P.fx.blind = true; el.playVessel.classList.add('blind'); }
+  Snd.ding();
+}
+function checkBoom(t, r) {
+  if (r >= 1 && t > P.grace && t - P.lastUI > 220) {
+    if (!P.exceedAt) P.exceedAt = t;
+    else if (t - P.exceedAt >= 70) return true;
+  } else if (r < 0.97) P.exceedAt = 0;
+  return false;
+}
+function tickArmed(t, dt) {
+  const S = SENS[G.sens];
+  P.held += dt;
+  P.loot += (1 + P.held / 5) * P.mult * dt;
+  const d = 1 - Math.exp(-P.held / TAU);
+  let r, cause;
+  if (G.mode === 'motion') {
+    if (t - Motion.last > 1500) { voidTurn('Il sensore di movimento si è interrotto: si rifà il turno.'); return; }
+    let thr = P.Tf + (P.T0 - P.Tf) * Math.exp(-P.held / TAU);
+    if (P.fx.hot) thr *= 0.85;
+    if (t < P.fx.calmUntil) thr *= 1.45;
+    const shake = Motion.agit / thr, spill = clamp((Motion.tilt - (S.tilt - 22)) / 22, 0, 2);
+    r = shake; cause = 'shake';
+    if (spill > r) { r = spill; cause = 'tilt'; }
+    P.vp = { tx: Motion.tx(), ty: Motion.ty(), danger: d, live: clamp(shake, 0, 1.3), blind: P.fx.blind };
+  } else {
+    const calm = t < P.fx.calmUntil;
+    if (!calm) P.wander += dt * (P.fx.hot ? 1.4 : 1) * S.touchSpeed;
+    const g = V.play.geom();
+    let W = g.R * (0.06 + 0.36 * d) * S.touchReach, rr = g.R * (0.34 - 0.2 * d) * S.touchSize;
+    if (P.fx.hot) { W *= 1.2; rr *= 0.85; }
+    if (calm) rr *= 1.3;
+    const s = P.wander, ph = P.ph;
+    const tg = {
+      x: g.cx + W * (0.62 * Math.sin(s * 0.71 + ph[0]) + 0.38 * Math.sin(s * 1.63 + ph[1])),
+      y: g.cy + W * (0.62 * Math.sin(s * 0.83 + ph[2]) + 0.38 * Math.sin(s * 1.37 + ph[3])),
+      r: rr
+    };
+    const touching = P.touch.id != null;
+    const ratio = touching ? Math.hypot(P.touch.x - tg.x, P.touch.y - tg.y) / rr : 2;
+    r = ratio; cause = 'slip';
+    P.vp = { danger: d, live: clamp(ratio * 0.8, 0, 1.3), blind: P.fx.blind, target: tg, touching: touching, finger: touching ? { x: P.touch.x, y: P.touch.y } : null };
+  }
+  if (G.night && Mic.on && G.noiseBase != null) {
+    const nr = Math.max(0, Mic.db - G.noiseBase) / S.dB;
+    if (nr > r) { r = nr; cause = 'noise'; }
+  }
+  P.r = r; P.cause = cause;
+  if (checkBoom(t, r)) { boom(cause); return; }
+  if (P.held >= P.compNext) { P.compNext += COMP_EVERY; newComplication(); }
+  updateHud(r, cause);
+  if (Snd.can() && !G.night) {
+    const inten = Math.max(d, Math.min(1, r));
+    if (t >= P.beatNext) { Snd.beat(inten); P.beatNext = t + 60000 / (58 + 112 * inten); }
+    Snd.hiss(P.fx.blind ? 0 : smooth(0.35, 1, r));
+  }
+}
+function updateHud(r, cause) {
+  const loot = Math.floor(P.loot);
+  if (loot !== P.shownLoot) { P.shownLoot = loot; setReadout(String(loot), 'punti in gioco'); }
+  el.clock.textContent = fmtSec(P.held);
+  if (el.comp.hidden) {
+    const w = 'Prima complicazione tra ' + Math.max(1, Math.ceil(P.compNext - P.held)) + ' s';
+    if (el.compWait.textContent !== w) el.compWait.textContent = w;
+  }
+  const blind = P.fx.blind;
+  if (blind !== el.meterBlock.classList.contains('blind')) el.meterBlock.classList.toggle('blind', blind);
+  setMeter(el.meterFill, blind ? 0 : r);
+  setHint(!blind && r > 0.6 ? HINT[cause] : '');
+  el.vignette.style.opacity = blind ? '0' : smooth(0.55, 1, r).toFixed(3);
+  if (!reduceMotion && !blind && r > 0.8) {
+    const a = (r - 0.8) * 22;
+    el.playVessel.style.transform = 'translate(' + ((Math.random() - 0.5) * a).toFixed(1) + 'px,' + ((Math.random() - 0.5) * a).toFixed(1) + 'px)';
+  } else if (el.playVessel.style.transform) el.playVessel.style.transform = '';
+  if (P.held < MIN_BANK) {
+    const s = Math.ceil(MIN_BANK - P.held);
+    if (s !== P.shownBank) { P.shownBank = s; el.bankBtn.disabled = true; el.bankBtn.textContent = 'Incassa tra ' + s; }
+  } else if (P.shownBank !== 0) { P.shownBank = 0; el.bankBtn.disabled = false; el.bankBtn.textContent = 'Incassa'; }
+}
+function endHold() {
+  P.phase = 'idle'; P.exceedAt = 0;
+  clearLiftTimer();
+  Snd.hissOff();
+  el.vignette.style.opacity = '0'; el.playVessel.style.transform = '';
+  if (P.touch.id != null) { try { el.cvPlay.releasePointerCapture(P.touch.id); } catch (e) {} P.touch.id = null; }
+}
+function voidTurn(msg) { endHold(); showTurn(G.cur, msg); }
+
+function bank() {
+  if (P.phase !== 'armed' || P.held < MIN_BANK) return;
+  P.lastUI = now();
+  const got = Math.floor(P.loot), held = P.held, p = G.players[G.cur];
+  endHold();
+  p.score += got; p.banks++; p.turns++; p.best = Math.max(p.best, held); p.bestBank = Math.max(p.bestBank, got); p.hold += held;
+  G.played.add(G.cur);
+  Snd.chime();
+  showNext({ kind: 'bank', got: got, held: held });
+}
+function boom(cause) {
+  const transit = P.phase === 'transit';
+  const lost = Math.floor(P.loot), held = P.held, cur = G.cur;
+  endHold();
+  Snd.boom();
+  try { if (navigator.vibrate) navigator.vibrate([90, 50, 240]); } catch (e) {}
+  flash();
+  if (transit) {
+    const a = G.players[G.prev].name, b = G.players[cur].name;
+    el.boomCause.textContent = 'Incidente in consegna. ' + (CAUSE_TRANSIT[cause] || '');
+    el.boomLost.textContent = 'I punti sono salvi.';
+    el.penHead.textContent = 'Penitenza di coppia per ' + a + ' e ' + b;
+    renderText(el.penText, drawFrom(G.decks.penC), namesFor(cur));
+    P.after = () => showTurn(cur);
+  } else {
+    const p = G.players[cur];
+    p.booms++; p.turns++; p.best = Math.max(p.best, held); p.hold += held;
+    G.played.add(cur);
+    el.boomCause.textContent = CAUSE[cause] || '';
+    el.boomLost.textContent = lost > 0 ? p.name + ' perde ' + pts(lost) + ' in gioco.' : p.name + ' non aveva ancora niente in gioco.';
+    el.penHead.textContent = 'Penitenza per ' + p.name;
+    renderText(el.penText, drawFrom(G.decks.pen), namesFor(cur));
+    P.after = () => showNext({ kind: 'boom' });
+  }
+  el.boomQuip.textContent = pick(QUIP_BOOM);
+  el.penance.hidden = !G.pen;
+  el.boomNext.disabled = true;
+  setTimeout(() => { el.boomNext.disabled = false; }, 900);
+  show('boom');
+  requestAnimationFrame(() => Boom.start(el.cvBoom));
+}
+
+/* ================= consegna ================= */
+function showNext(info) {
+  const p = G.players[G.cur];
+  const rem = G.players.map((_, i) => i).filter(i => !G.played.has(i));
+  el.nextHead.textContent = '';
+  const add = (cls, txt) => { const n = document.createElement('p'); n.className = cls; n.textContent = txt; el.nextHead.appendChild(n); };
+  if (info.kind === 'bank') {
+    add('plus', '+' + info.got);
+    add('next-quip', pick(QUIP_BANK));
+    add('next-sub', p.name + ' ha resistito ' + fmtSec(info.held) + ' e ora ha ' + pts(p.score) + '.');
+  } else {
+    add('next-sub', p.name + ' resta a ' + pts(p.score) + '.');
+  }
+  el.pickList.textContent = '';
+  if (!rem.length) {
+    el.nextQ.textContent = G.round >= G.rounds ? 'Ultimo giro finito' : 'Fine del giro ' + G.round;
+    const b = document.createElement('button');
+    b.type = 'button'; b.className = 'btn primary big wide'; b.textContent = 'Vedi la classifica';
+    b.addEventListener('click', roundEnd);
+    el.pickList.appendChild(b);
+    el.nextNote.textContent = '';
+  } else {
+    el.nextQ.textContent = 'A chi passi la fiala?';
+    rem.forEach(i => {
+      const b = document.createElement('button');
+      b.type = 'button'; b.className = 'btn wide'; b.textContent = G.players[i].name;
+      b.addEventListener('click', () => handoff(G.cur, i));
+      el.pickList.appendChild(b);
+    });
+    el.nextNote.textContent = G.mode === 'motion'
+      ? 'La fiala resta accesa anche nel passaggio: consegnala palmo a palmo, con calma.'
+      : 'Passa il telefono a chi hai scelto.';
+  }
+  show('next');
+}
+function handoff(from, to) {
+  G.prev = from; G.cur = to;
+  if (G.mode === 'motion') startTransit(); else showTurn(to);
+}
+function startTransit() {
+  const a = G.players[G.prev].name, b = G.players[G.cur].name;
+  show('play'); setPlayLayout('transit');
+  el.playName.textContent = a + ' → ' + b;
+  el.transitTitle.textContent = 'Consegna a ' + b;
+  el.transitText.textContent = a + ', tienila in piano. ' + b + ', allunga il palmo aperto e tocca «Presa» quando ce l’hai.';
+  el.meterLabel.textContent = 'Pericolo';
+  setReadout('', 'in consegna');
+  const t = now();
+  P.phase = 'transit'; P.live = false; P.prepOk = 0; P.exceedAt = 0; P.loot = 0; P.held = 0; P.r = 0; P.cause = ''; P.lastUI = t; P.grace = t + 400;
+  P.vp = { danger: 0.2, live: 0.05 };
+  Snd.hissOn();
+}
+function tickTransit(t, dt) {
+  const S = SENS[G.sens];
+  if (t - Motion.last > 1500) { voidTurn('Il sensore di movimento si è interrotto durante la consegna.'); return; }
+  if (!P.live) {
+    const ok = Motion.tilt < 25 && Motion.agit < S.transit * 0.6;
+    P.prepOk = ok ? P.prepOk + dt : 0;
+    setHint(ok ? '' : 'Prima mettila in piano.');
+    setMeter(el.meterFill, 0);
+    P.vp = { tx: Motion.tx(), ty: Motion.ty(), danger: 0.2, live: clamp(Motion.agit / S.transit, 0, 1) };
+    if (P.prepOk >= 0.6) { P.live = true; P.grace = t + 150; setHint(''); }
+    return;
+  }
+  const shake = Motion.agit / S.transit, spill = clamp((Motion.tilt - (S.tilt - 12)) / 22, 0, 2);
+  let r = shake, cause = 'shake';
+  if (spill > r) { r = spill; cause = 'tilt'; }
+  if (G.night && Mic.on && G.noiseBase != null) {
+    const nr = Math.max(0, Mic.db - G.noiseBase) / (S.dB + 4);
+    if (nr > r) { r = nr; cause = 'noise'; }
+  }
+  P.r = r; P.cause = cause;
+  if (checkBoom(t, r)) { boom(cause); return; }
+  setMeter(el.meterFill, r);
+  setHint(r > 0.6 ? HINT[cause] : '');
+  el.vignette.style.opacity = smooth(0.55, 1, r).toFixed(3);
+  P.vp = { tx: Motion.tx(), ty: Motion.ty(), danger: 0.25, live: clamp(shake, 0, 1.3) };
+  Snd.hiss(smooth(0.35, 1, r));
+}
+function take() {
+  if (P.phase !== 'transit') return;
+  P.lastUI = now();
+  endHold();
+  startCalib(G.cur);
+}
+
+/* ================= classifica e finale ================= */
+function ranking() { return G.players.slice().sort((a, b) => b.score - a.score || a.booms - b.booms); }
+function renderBoard(ol, list) {
+  ol.textContent = '';
+  const top = list.length ? list[0].score : 0;
+  list.forEach(p => {
+    const li = document.createElement('li');
+    if (p.score === top && top > 0) li.className = 'first';
+    const nm = document.createElement('span'); nm.className = 'nm'; nm.textContent = p.name;
+    const bm = document.createElement('span'); bm.className = 'bm'; bm.textContent = p.booms ? (p.booms === 1 ? '1 esplosione' : p.booms + ' esplosioni') : '';
+    const sc = document.createElement('span'); sc.className = 'sc'; sc.textContent = p.score;
+    li.appendChild(nm); li.appendChild(bm); li.appendChild(sc); ol.appendChild(li);
+  });
+}
+function roundEnd() {
+  if (G.round >= G.rounds) { showFinal(); return; }
+  el.roundTitle.textContent = 'Fine del giro ' + G.round;
+  renderBoard(el.roundBoard, ranking());
+  const min = Math.min.apply(null, G.players.map(p => p.score));
+  const lows = G.players.map((_, i) => i).filter(i => G.players[i].score === min);
+  const starter = pick(lows);
+  const nextR = G.round + 1, who = G.players[starter].name;
+  el.roundNote.textContent = lows.length === G.players.length
+    ? 'Siete tutti pari. Il giro ' + nextR + ' lo comincia ' + who + ', estratto a sorte.'
+    : lows.length > 1
+      ? 'Il giro ' + nextR + ' lo comincia ' + who + ', a pari merito tra chi è più indietro.'
+      : 'Il giro ' + nextR + ' lo comincia ' + who + ', che è più indietro in classifica.';
+  el.roundGo.textContent = 'Inizia il giro ' + (G.round + 1);
+  el.roundGo.onclick = () => { G.round++; G.played = new Set(); showTurn(starter); };
+  show('round');
+}
+function awards() {
+  const ps = G.players, L = [];
+  const nm = arr => listNames(arr.map(p => p.name));
+  const maxB = Math.max.apply(null, ps.map(p => p.booms));
+  if (maxB > 0) L.push(['Il Terremoto', nm(ps.filter(p => p.booms === maxB)) + ', ' + (maxB === 1 ? '1 esplosione' : maxB + ' esplosioni')]);
+  const best = Math.max.apply(null, ps.map(p => p.best));
+  if (best >= 3) L.push(['Cuore di ghiaccio', nm(ps.filter(p => p.best === best)) + ', ' + fmtSec(best) + ' con la fiala in mano']);
+  const bb = Math.max.apply(null, ps.map(p => p.bestBank));
+  if (bb > 0) L.push(['Il colpo grosso', nm(ps.filter(p => p.bestBank === bb)) + ', ' + pts(bb) + ' in un solo turno']);
+  const clean = ps.filter(p => p.booms === 0 && p.turns > 0);
+  if (clean.length && clean.length < ps.length) L.push(['Artificiere impeccabile', nm(clean) + ', nessuna esplosione']);
+  return L;
+}
+function showFinal() {
+  const list = ranking(), top = list[0].score, winners = list.filter(p => p.score === top);
+  el.finalKicker.textContent = winners.length > 1 ? 'Pari merito' : 'Ha vinto';
+  el.finalWinner.textContent = listNames(winners.map(p => p.name));
+  el.finalScore.textContent = pts(top) + (winners.length > 1 ? ' a testa' : '');
+  renderBoard(el.finalBoard, list);
+  el.finalAwards.textContent = '';
+  awards().forEach(a => {
+    const d = document.createElement('div'); d.className = 'award';
+    const b = document.createElement('b'); b.textContent = a[0];
+    const s = document.createElement('span'); s.textContent = a[1];
+    d.appendChild(b); d.appendChild(s); el.finalAwards.appendChild(d);
+  });
+  G.active = false; releaseWake(); Mic.stop();
+  show('final');
+}
+function quitGame() { endHold(); G.active = false; Mic.stop(); releaseWake(); show('home'); }
+function bindQuit(btn) {
+  const label = btn.textContent; let timer = 0;
+  btn.addEventListener('click', () => {
+    if (btn.dataset.sure === '1') { clearTimeout(timer); btn.dataset.sure = ''; btn.textContent = label; quitGame(); return; }
+    btn.dataset.sure = '1'; btn.textContent = 'Tocca di nuovo per uscire';
+    timer = setTimeout(() => { btn.dataset.sure = ''; btn.textContent = label; }, 3000);
+  });
+}
+
+/* ================= dito sul cerchio ================= */
+let liftTimer = 0;
+function clearLiftTimer() { if (liftTimer) { clearTimeout(liftTimer); liftTimer = 0; } }
+function canvasPos(e) {
+  const r = el.cvPlay.getBoundingClientRect(), d = V.play.dpr;
+  return { x: (e.clientX - r.left) * d, y: (e.clientY - r.top) * d };
+}
+function onCanvasDown(e) {
+  if (G.mode !== 'touch' || (P.phase !== 'calib' && P.phase !== 'armed') || P.touch.id != null) return;
+  const pos = canvasPos(e);
+  const tg = P.phase === 'armed' ? P.vp.target : calibTarget();
+  if (!tg || Math.hypot(pos.x - tg.x, pos.y - tg.y) > tg.r * 1.15) return;
+  e.preventDefault();
+  P.touch.id = e.pointerId; P.touch.x = pos.x; P.touch.y = pos.y;
+  try { el.cvPlay.setPointerCapture(e.pointerId); } catch (err) {}
+}
+function onCanvasMove(e) {
+  if (e.pointerId !== P.touch.id) return;
+  const pos = canvasPos(e); P.touch.x = pos.x; P.touch.y = pos.y;
+}
+function onCanvasUp(e) {
+  if (e.pointerId !== P.touch.id) return;
+  // Un secondo dito su «Incassa» può mandare pointercancel al primo.
+  // Si aspetta un attimo: se nel frattempo si incassa, la banca vince sullo stacco.
+  if (e.type === 'pointercancel' && P.phase === 'armed') {
+    if (P.holdLift) return;
+    const pid = P.touch.id, t = now();
+    P.lastUI = t; P.grace = Math.max(P.grace || 0, t + 260);
+    clearLiftTimer();
+    liftTimer = setTimeout(() => {
+      liftTimer = 0;
+      if (P.phase === 'armed' && P.touch.id === pid && !P.holdLift) { P.touch.id = null; boom('lift'); }
+    }, 200);
+    return;
+  }
+  P.touch.id = null;
+  if (P.phase === 'armed') boom('lift');
+  else if (P.phase === 'calib') P.calibOk = 0;
+}
+
+/* ================= ciclo principale ================= */
+function idleVP(t) { return { tx: 0.25 * Math.sin(t / 1500), ty: 0.2 * Math.cos(t / 1900), danger: 0.04, live: 0.05 + 0.04 * Math.sin(t / 800) }; }
+let lastT = now();
+function loop() {
+  const t = now(), dt = clamp((t - lastT) / 1000, 0, 0.05); lastT = t;
+  try {
+    if (Mic.on) Mic.read(dt);
+    if (P.phase === 'calib') tickCalib(t, dt);
+    else if (P.phase === 'armed') tickArmed(t, dt);
+    else if (P.phase === 'transit') tickTransit(t, dt);
+    else if (P.phase === 'test') tickTest(t, dt);
+    if (screen === 'home') V.home.draw(dt, idleVP(t));
+    else if (screen === 'play') V.play.draw(dt, P.vp);
+    else if (screen === 'test') V.test.draw(dt, P.phase === 'test' ? P.vp : idleVP(t));
+    if (Boom.active) Boom.draw(dt);
+  } catch (e) { if (window.console) console.error(e); }
+  requestAnimationFrame(loop);
+}
+
+/* ================= collegamenti ================= */
+function init() {
+  loadPrefs(); refreshTheme();
+  V.home = new Vessel(el.cvHome); V.play = new Vessel(el.cvPlay); V.test = new Vessel(el.cvTest);
+
+  // un tocco iniziato prima di un cambio di schermata non deve premere niente nella schermata nuova
+  document.addEventListener('pointerdown', () => { lastPD = now(); }, true);
+  document.addEventListener('click', e => {
+    if (e.detail > 0 && lastPD < lastSwap) { e.stopPropagation(); e.preventDefault(); }
+  }, true);
+
+  $$('[data-go]').forEach(b => b.addEventListener('click', () => {
+    if (screen === 'test' && b.dataset.go !== 'test') leaveTest();
+    else if (P.phase === 'test') P.phase = 'idle';
+    if (b.dataset.go === 'setup') renderPlayers();
+    show(b.dataset.go);
+  }));
+  el.addBtn.addEventListener('click', addName);
+  el.nameIn.addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); addName(); } });
+  bindRadio(el.levels, 'level');
+  bindRadio(el.rounds, 'rounds', v => parseInt(v, 10));
+  bindRadio(el.sens, 'sens');
+  bindRadio(el.sensTest, 'sens');
+  bindSwitches();
+  el.startBtn.addEventListener('click', startGame);
+  el.turnGo.addEventListener('click', () => startCalib(G.cur));
+  el.bankBtn.addEventListener('pointerdown', e => { e.preventDefault(); bank(); });
+  el.bankBtn.addEventListener('click', bank);
+  el.takeBtn.addEventListener('pointerdown', e => { e.preventDefault(); take(); });
+  el.takeBtn.addEventListener('click', take);
+  el.changeBtn.addEventListener('pointerdown', e => { e.preventDefault(); changeChallenge(); });
+  el.changeBtn.addEventListener('click', changeChallenge);
+  el.boomNext.addEventListener('click', () => { const f = P.after; P.after = null; if (f) f(); });
+  el.againBtn.addEventListener('click', rematch);
+  el.setupBtn.addEventListener('click', () => { G.names = G.players.map(p => p.name); renderPlayers(); show('setup'); });
+  el.menuBtn.addEventListener('click', () => { releaseMicIfIdle(); show('home'); });
+  bindQuit(el.quit1); bindQuit(el.quit2);
+  bindAbort();
+  el.testOn.addEventListener('click', testSensor);
+  el.testMic.addEventListener('click', testMic);
+  el.cvPlay.addEventListener('pointerdown', onCanvasDown);
+  el.cvPlay.addEventListener('pointermove', onCanvasMove);
+  el.cvPlay.addEventListener('pointerup', onCanvasUp);
+  el.cvPlay.addEventListener('pointercancel', onCanvasUp);
+  el.cvPlay.addEventListener('contextmenu', e => e.preventDefault());
+  document.addEventListener('keydown', e => {
+    if (screen !== 'play') return;
+    if (e.key === ' ' || e.key === 'Enter') {
+      if (P.phase === 'armed') { e.preventDefault(); bank(); }
+      else if (P.phase === 'transit') { e.preventDefault(); take(); }
+    } else if (e.key === 'c' || e.key === 'C') changeChallenge();
+  });
+  document.addEventListener('visibilitychange', () => {
+    if (document.hidden) {
+      if ((P.phase === 'armed' || P.phase === 'transit') && P.r >= 0.7) boom(P.cause || 'shake');
+      else if (P.phase === 'armed' || P.phase === 'calib' || P.phase === 'transit') voidTurn('Il telefono è andato in pausa: si rifà il turno da capo.');
+    } else if (G.active) keepAwake();
+  });
+  window.addEventListener('resize', () => requestAnimationFrame(resizeAll));
+  if ('ResizeObserver' in window) {
+    const ro = new ResizeObserver(() => resizeAll());
+    [el.homeVessel, el.playVessel, el.testVessel].forEach(n => ro.observe(n));
+  }
+
+  renderPlayers();
+  show('home');
+  requestAnimationFrame(loop);
+  if (/[?&]debug\b/.test(location.search)) window.__fs = { P: P, G: G, V: V, Motion: Motion };
+  // gioco installabile e disponibile anche senza rete, quando è online su un indirizzo suo (es. GitHub Pages)
+  const web = location.protocol === 'https:' || location.hostname === 'localhost' || location.hostname === '127.0.0.1';
+  if (web && 'serviceWorker' in navigator && window.self === window.top) {
+    window.addEventListener('load', () => { navigator.serviceWorker.register('sw.js').catch(() => {}); });
+  }
+}
+init();
+})();
+
+</script>
+</body>
+</html>
