@@ -1,0 +1,20 @@
+{
+  "name": "Fiato Sospeso",
+  "short_name": "Fiato Sospeso",
+  "description": "Rispondi in movimento, tieni in equilibrio la fiala e scegli quando incassare.",
+  "lang": "it",
+  "start_url": "./",
+  "scope": "./",
+  "related_applications": [
+    { "platform": "webapp", "url": "./manifest.webmanifest" }
+  ],
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#031019",
+  "theme_color": "#031019",
+  "icons": [
+    { "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "icons/icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}
